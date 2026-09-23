@@ -99,9 +99,15 @@ function renderTeams() {
   teamList.innerHTML = "";
 
   teams.forEach((team) => {
-    const teamCard = document.createElement("div");
+    const teamCard = document.createElement("a");
 
     teamCard.className = "team-item";
+
+    teamCard.href =
+      `team.html?team=${encodeURIComponent(team)}` +
+      `&league=${encodeURIComponent(activeTeamLeague)}` +
+      `&division=${encodeURIComponent(activeTeamDivision)}`;
+
     teamCard.textContent = team;
 
     teamList.appendChild(teamCard);
