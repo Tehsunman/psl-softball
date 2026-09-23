@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Schedules | Port St. Lucie Softball League</title>
+    <meta
+      name="description"
+      content="Men's and coed softball schedules for Port St. Lucie Softball League."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html"
+          ><span class="brand-ball">●</span><span>PSL Softball</span></a
+        ><button
+          class="menu-button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+        <nav class="nav">
+          <a href="index.html">Home</a
+          ><a class="active" href="schedules.html">Schedules</a
+          ><a href="teams.html">Teams</a><a href="standings.html">Standings</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="page-hero shell">
+        <p class="eyebrow">Port St. Lucie Softball League</p>
+        <h1>Schedules</h1>
+        <p>Select your division to find your games.</p>
+      </section>
+      <section class="panel shell">
+        <div class="filters subfilters" id="division-filters"></div>
+        <div class="section-heading">
+          <h2 id="schedule-title">Men's League Schedule</h2>
+        </div>
+        <p class="schedule-note" id="schedule-note">
+          Games played Monday &amp; Wednesday
+        </p>
+        <div class="table-scroll schedule-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Home</th>
+                <th>Visitor</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+        <div id="schedule-empty" class="empty-state" hidden>
+          No games are currently listed for this division.
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>Port St. Lucie Softball League</span><span>PSL • FL</span>
+      </div>
+    </footer>
+    <script src="js/league-data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/schedules.js"></script>
+  </body>
+</html>

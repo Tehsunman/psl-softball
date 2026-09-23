@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Port St. Lucie Softball League</title>
+    <meta
+      name="description"
+      content="Schedules, teams, standings and announcements for Port St. Lucie men's and coed softball."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a
+          class="brand"
+          href="index.html"
+          aria-label="Port St. Lucie Softball League home"
+        >
+          <span class="brand-ball">●</span><span>PSL Softball</span>
+        </a>
+        <button
+          class="menu-button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+        <nav class="nav" aria-label="Main navigation">
+          <a class="active" href="index.html">Home</a>
+          <a href="schedules.html">Schedules</a>
+          <a href="teams.html">Teams</a>
+          <a href="standings.html">Standings</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero shell">
+        <p class="eyebrow">Port St. Lucie, Florida</p>
+        <h1>Port St. Lucie</h1>
+        <p class="hero-sub">Softball League</p>
+      </section>
+
+      <section class="league-grid shell" aria-label="League options">
+        <article class="league-card">
+          <h2>Men's Softball</h2>
+          <p class="play-days">Monday &amp; Wednesday</p>
+          <div class="accent-line"></div>
+          <div class="card-actions">
+            <a class="button primary" href="schedules.html?league=mens"
+              >View Schedule</a
+            >
+            <a class="button secondary" href="standings.html?league=mens"
+              >View Standings</a
+            >
+          </div>
+        </article>
+
+        <article class="league-card">
+          <h2>Coed Softball</h2>
+          <p class="play-days">Friday</p>
+          <div class="accent-line"></div>
+          <div class="card-actions">
+            <a class="button primary" href="schedules.html?league=coed"
+              >View Schedule</a
+            >
+            <a class="button secondary" href="standings.html?league=coed"
+              >View Standings</a
+            >
+          </div>
+        </article>
+      </section>
+
+      <section class="panel shell upcoming">
+        <div class="section-heading">
+          <h2><span class="icon">▦</span> Upcoming Games</h2>
+          <a href="schedules.html">View Full Schedule →</a>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Home Team</th>
+                <th>Away Team</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody id="upcoming-games"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>Port St. Lucie Softball League</span><span>PSL • FL</span>
+      </div>
+    </footer>
+    <script src="js/league-data.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

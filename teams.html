@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Teams | Port St. Lucie Softball League</title>
+
+    <meta
+      name="description"
+      content="Men's and coed softball teams for the Port St. Lucie Softball League."
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- ==================================================
+         HEADER
+         ================================================== -->
+
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-ball">●</span>
+          <span>PSL Softball</span>
+        </a>
+
+        <button
+          class="menu-button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="schedules.html">Schedules</a>
+          <a class="active" href="teams.html">Teams</a>
+          <a href="standings.html">Standings</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ==================================================
+         MAIN CONTENT
+         ================================================== -->
+
+    <main>
+      <section class="page-hero shell">
+        <p class="eyebrow">Port St. Lucie Softball League</p>
+        <h1>Teams</h1>
+        <p>View teams by league and division.</p>
+      </section>
+
+      <section class="panel shell">
+        <!-- League Filters -->
+
+        <div class="filters" id="team-league-filters">
+          <button class="filter-btn active" data-team-league="mens">
+            Men's
+          </button>
+
+          <button class="filter-btn" data-team-league="coed">Coed</button>
+        </div>
+
+        <!-- Division Filters -->
+
+        <div class="filters subfilters" id="team-division-filters"></div>
+
+        <!-- Division Heading -->
+
+        <div class="section-heading">
+          <h2 id="team-title">Men's Upper Division</h2>
+        </div>
+
+        <!-- Team List -->
+
+        <div class="team-grid" id="team-list"></div>
+
+        <!-- Empty State -->
+
+        <div id="teams-empty" class="empty-state" hidden>
+          Team information coming soon.
+        </div>
+      </section>
+    </main>
+
+    <!-- ==================================================
+         FOOTER
+         ================================================== -->
+
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>Port St. Lucie Softball League</span>
+        <span>PSL • FL</span>
+      </div>
+    </footer>
+
+    <script src="js/league-data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/teams.js"></script>
+  </body>
+</html>

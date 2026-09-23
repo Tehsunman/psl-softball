@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Standings | Port St. Lucie Softball League</title>
+
+    <meta
+      name="description"
+      content="View men's and coed softball standings for the Port St. Lucie Softball League."
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-ball">●</span>
+          <span>PSL Softball</span>
+        </a>
+
+        <button
+          class="menu-button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="schedules.html">Schedules</a>
+          <a href="teams.html">Teams</a>
+          <a class="active" href="standings.html">Standings</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero shell">
+        <p class="eyebrow">Port St. Lucie Softball League</p>
+        <h1>Standings</h1>
+        <p>View standings by league and division.</p>
+      </section>
+
+      <section class="panel shell standings-panel">
+        <!-- League Filters -->
+        <div class="filters" id="standings-league-filters">
+          <button class="filter-btn" data-league="mens">Men's</button>
+          <button class="filter-btn" data-league="coed">Coed</button>
+        </div>
+
+        <!-- Division Filters -->
+        <div class="filters subfilters" id="standings-division-filters"></div>
+
+        <!-- Heading -->
+        <div class="section-heading">
+          <h2 id="standings-title">Men's Upper Division</h2>
+        </div>
+
+        <!-- Standings Table -->
+        <div class="table-scroll standings-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>T</th>
+                <th>RF</th>
+                <th>RA</th>
+              </tr>
+            </thead>
+
+            <tbody id="standings-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="standings-empty" class="empty-state" hidden>
+          Standings are not available for this division yet.
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>Port St. Lucie Softball League</span>
+        <span>PSL • FL</span>
+      </div>
+    </footer>
+
+    <script src="js/league-data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/standings.js"></script>
+  </body>
+</html>
