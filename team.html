@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Team | Port St. Lucie Softball League</title>
+
+    <meta
+      name="description"
+      content="View team schedule and standings for the Port St. Lucie Softball League."
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-ball">●</span>
+          <span>PSL Softball</span>
+        </a>
+
+        <button
+          class="menu-button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="schedules.html">Schedules</a>
+          <a class="active" href="teams.html">Teams</a>
+          <a href="standings.html">Standings</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- TEAM HEADER -->
+      <section class="page-hero shell team-page-hero">
+        <p class="eyebrow" id="team-league-label">
+          Port St. Lucie Softball League
+        </p>
+
+        <h1 id="team-name">Team</h1>
+
+        <p id="team-division-label"></p>
+      </section>
+
+      <!-- TEAM SCHEDULE -->
+      <section class="panel shell team-detail-panel">
+        <div class="section-heading">
+          <h2>Schedule</h2>
+        </div>
+
+        <div class="table-scroll team-schedule-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Opponent</th>
+                <th>Home/Away</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+
+            <tbody id="team-schedule-body"></tbody>
+          </table>
+        </div>
+
+        <div id="team-schedule-empty" class="empty-state" hidden>
+          No games are currently listed for this team.
+        </div>
+      </section>
+
+      <!-- DIVISION STANDINGS -->
+      <section class="panel shell team-detail-panel">
+        <div class="section-heading">
+          <h2 id="team-standings-title">Division Standings</h2>
+        </div>
+
+        <div class="table-scroll standings-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>T</th>
+                <th>RF</th>
+                <th>RA</th>
+              </tr>
+            </thead>
+
+            <tbody id="team-standings-body"></tbody>
+          </table>
+        </div>
+
+        <div id="team-standings-empty" class="empty-state" hidden>
+          Standings are not available for this division yet.
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>Port St. Lucie Softball League</span>
+        <span>PSL • FL</span>
+      </div>
+    </footer>
+
+    <script src="js/league-data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/team.js"></script>
+  </body>
+</html>
