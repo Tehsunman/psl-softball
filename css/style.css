@@ -1,0 +1,786 @@
+:root {
+    --navy: #0d3040;
+    --navy2: #124858;
+    --ink: #142b38;
+    --pink: #078c87;
+    --paper: #f7f7f4;
+    --line: #d8dde0;
+    --muted: #657887;
+    --white: #fff;
+    --shadow: 0 5px 18px rgba(11, 38, 53, .06)
+}
+
+* {
+    box-sizing: border-box
+}
+
+html {
+    scroll-behavior: smooth
+}
+
+body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: linear-gradient(to bottom, rgba(247, 247, 244, .10) 0, rgba(247, 247, 244, .24) 360px, var(--paper) 880px), url("../images/palm-background.png");
+    background-size: 100% 100%, 100% auto;
+    background-position: top center, top center;
+    background-repeat: no-repeat, no-repeat
+}
+
+a {
+    color: inherit
+}
+
+.shell {
+    width: min(1160px, calc(100% - 40px));
+    margin-inline: auto
+}
+
+.site-header {
+    background: var(--navy);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .12)
+}
+
+.nav-wrap {
+    width: min(1160px, calc(100% - 40px));
+    margin: auto;
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em
+}
+
+.brand-ball {
+    color: var(--pink);
+    font-size: 28px
+}
+
+.nav {
+    display: flex;
+    gap: 44px;
+    height: 76px;
+    align-items: center
+}
+
+.nav a {
+    height: 76px;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: .06em;
+    border-bottom: 4px solid transparent
+}
+
+.nav a:hover,
+.nav a.active {
+    border-color: var(--pink)
+}
+
+.menu-button {
+    display: none;
+    border: 0;
+    background: none;
+    color: #fff;
+    font-size: 28px
+}
+
+.hero {
+    padding: 70px 0 42px;
+    text-align: center;
+    position: relative
+}
+
+.hero:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, .05), rgba(255, 255, 255, .28));
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .28em;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800
+}
+
+.hero h1 {
+    margin: 4px 0 0;
+    text-transform: uppercase;
+    font-size: clamp(52px, 8vw, 92px);
+    line-height: .9;
+    letter-spacing: .02em;
+    font-family: Impact, "Arial Narrow", sans-serif
+}
+
+.hero-sub {
+    margin: 10px 0 0;
+    text-transform: uppercase;
+    letter-spacing: .32em;
+    font-weight: 800;
+    font-size: clamp(18px, 3vw, 30px)
+}
+
+.league-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 22px
+}
+
+.league-card,
+.panel {
+    background: rgba(255, 255, 255, .86);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow)
+}
+
+.league-card {
+    padding: 30px;
+    text-align: center
+}
+
+.league-card h2,
+.section-heading h2 {
+    text-transform: uppercase;
+    font-family: Impact, "Arial Narrow", sans-serif;
+    letter-spacing: .025em
+}
+
+.league-card h2 {
+    font-size: 38px;
+    margin: 0
+}
+
+.play-days {
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-weight: 700;
+    margin: 6px 0 16px
+}
+
+.accent-line {
+    height: 4px;
+    width: 60px;
+    background: var(--pink);
+    margin: 0 auto 18px
+}
+
+.divisions {
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-weight: 800
+}
+
+.divisions span {
+    color: var(--pink);
+    margin: 0 10px
+}
+
+.card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 26px
+}
+
+.button {
+    padding: 15px 18px;
+    border-radius: 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 14px
+}
+
+.primary {
+    background: var(--pink);
+    color: #fff;
+    border: 2px solid var(--pink)
+}
+
+.primary:hover {
+    filter: brightness(.94)
+}
+
+.secondary {
+    border: 2px solid var(--navy);
+    background: #fff
+}
+
+.secondary:hover {
+    background: var(--navy);
+    color: #fff
+}
+
+.panel {
+    margin-bottom: 22px;
+    padding: 20px
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 12px
+}
+
+.section-heading h2 {
+    font-size: 30px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.section-heading a {
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 13px
+}
+
+.icon {
+    color: var(--pink)
+}
+
+.announcement-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    min-height: 52px
+}
+
+.announcement-row:last-child {
+    border-bottom: 1px solid var(--line)
+}
+
+.announcement-date {
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 14px;
+    color: var(--muted);
+    font-weight: 800;
+    border-right: 1px solid var(--line);
+    text-transform: uppercase
+}
+
+.announcement-text {
+    padding: 14px 20px
+}
+
+.table-scroll {
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: 5px
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 820px
+}
+
+th {
+    background: var(--navy);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: .04em;
+    padding: 13px 12px
+}
+
+td {
+    padding: 13px 12px;
+    text-align: center;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line)
+}
+
+tr:last-child td {
+    border-bottom: 0
+}
+
+td:last-child,
+th:last-child {
+    border-right: 0
+}
+
+.footer {
+    margin-top: 26px;
+    background: var(--navy);
+    color: #fff
+}
+
+.footer-inner {
+    min-height: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-size: 12px
+}
+
+@media(max-width:760px) {
+
+    .shell,
+    .nav-wrap {
+        width: min(100% - 24px, 1160px)
+    }
+
+    .nav-wrap {
+        min-height: 64px
+    }
+
+    .menu-button {
+        display: block
+    }
+
+    .nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 64px;
+        height: auto;
+        background: var(--navy);
+        flex-direction: column;
+        gap: 0;
+        padding: 8px 12px 14px
+    }
+
+    .nav.open {
+        display: flex
+    }
+
+    .nav a {
+        width: 100%;
+        height: 48px;
+        border-bottom: 0;
+        border-left: 4px solid transparent
+    }
+
+    .nav a.active {
+        border-left-color: var(--pink)
+    }
+
+    .hero {
+        padding: 48px 0 30px
+    }
+
+    .league-grid {
+        grid-template-columns: 1fr
+    }
+
+    .league-card {
+        padding: 24px 18px
+    }
+
+    .league-card h2 {
+        font-size: 32px
+    }
+
+    .card-actions {
+        grid-template-columns: 1fr
+    }
+
+    .section-heading {
+        align-items: flex-start
+    }
+
+    .section-heading h2 {
+        font-size: 25px
+    }
+
+    .announcement-row {
+        grid-template-columns: 105px 1fr
+    }
+
+    .announcement-date {
+        font-size: 12px
+    }
+
+    .announcement-text {
+        padding: 12px;
+        font-size: 14px
+    }
+
+    .footer-inner {
+        min-height: 90px;
+        gap: 20px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center
+    }
+}
+
+.page-hero {
+    padding: 48px 0 26px
+}
+
+.page-hero h1 {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: clamp(44px, 7vw, 72px);
+    font-family: Impact, "Arial Narrow", sans-serif;
+    letter-spacing: .02em
+}
+
+.page-hero p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-weight: 700
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 18px
+}
+
+.filter-btn {
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    padding: 11px 18px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: #fff
+}
+
+.subfilters {
+    margin-top: -8px
+}
+
+.schedule-group {
+    margin-top: 22px
+}
+
+.schedule-group h3 {
+    font-family: Impact, "Arial Narrow", sans-serif;
+    text-transform: uppercase;
+    font-size: 25px;
+    letter-spacing: .03em;
+    margin: 0 0 10px
+}
+
+.schedule-note {
+    color: var(--muted);
+    font-size: 14px;
+    margin: -4px 0 16px
+}
+
+.empty-state {
+    padding: 35px;
+    text-align: center;
+    color: var(--muted);
+    border: 1px dashed var(--line);
+    border-radius: 5px;
+    background: #fff
+}
+
+@media(max-width:760px) {
+    body {
+        background-size: auto 760px, auto 760px;
+        background-position: top center, top center
+    }
+}
+
+/* ======================================================
+   TEAMS PAGE
+   ====================================================== */
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 14px;
+  margin-top: 8px;
+}
+
+.team-item {
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-item {
+    padding: 12px 14px;
+  }
+}
+/* ======================================================
+   UPCOMING GAMES - MOBILE
+   ====================================================== */
+
+@media (max-width: 760px) {
+  .upcoming .table-scroll {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .upcoming .table-scroll table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .upcoming thead {
+    display: none;
+  }
+
+  #upcoming-games {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #upcoming-games,
+  #upcoming-games tr,
+  #upcoming-games td {
+    display: block;
+  }
+
+  #upcoming-games tr {
+    position: relative;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  #upcoming-games tr:last-child {
+    border-bottom: none;
+  }
+
+  #upcoming-games td {
+    padding: 0;
+    border: 0;
+    text-align: left;
+  }
+
+  #upcoming-games .game-date {
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  #upcoming-games .game-time {
+    position: absolute;
+    top: 14px;
+    right: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  #upcoming-games .game-home {
+    display: inline;
+    font-weight: 700;
+  }
+
+  #upcoming-games .game-home::after {
+    content: " vs ";
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  #upcoming-games .game-away {
+    display: inline;
+    font-weight: 700;
+  }
+
+  #upcoming-games .game-location {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+}
+
+/* ======================================================
+   FULL SCHEDULE - MOBILE
+   ====================================================== */
+
+   .mobile-matchup {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .schedule-table {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .schedule-table table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .schedule-table thead {
+    display: none;
+  }
+
+  #schedule-body,
+  #schedule-body tr {
+    display: block;
+  }
+
+  #schedule-body tr {
+    position: relative;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  #schedule-body tr:last-child {
+    border-bottom: none;
+  }
+
+  #schedule-body td {
+    padding: 0;
+    border: 0;
+    text-align: left;
+  }
+
+  /* Date */
+
+  #schedule-body .schedule-date {
+    display: block;
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  /* Time */
+
+  #schedule-body .schedule-time {
+    display: block;
+    position: absolute;
+    top: 14px;
+    right: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* Home team + visitor team */
+
+  #schedule-body .schedule-home {
+  display: block;
+  margin-top: 3px;
+}
+
+#schedule-body .desktop-home {
+  display: none;
+}
+
+#schedule-body .mobile-matchup {
+  display: block;
+  font-weight: 700;
+}
+
+#schedule-body .mobile-matchup span {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+#schedule-body .schedule-away {
+  display: none;
+}
+
+  /* Location */
+
+  #schedule-body .schedule-location {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+}
+/* ======================================================
+   STANDINGS - MOBILE
+   ====================================================== */
+
+@media (max-width: 760px) {
+  .standings-table {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .standings-table table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  /* Give the team name most of the available space */
+  .standings-table th:first-child,
+  .standings-table td:first-child {
+    width: 45%;
+    text-align: left;
+  }
+
+  /* Keep stat columns compact */
+  .standings-table th:not(:first-child),
+  .standings-table td:not(:first-child) {
+    width: 11%;
+    text-align: center;
+  }
+
+  .standings-table th {
+    padding: 10px 3px;
+    font-size: 11px;
+  }
+
+  .standings-table td {
+    padding: 12px 3px;
+    font-size: 14px;
+  }
+
+  .standings-table .standings-team {
+    padding-left: 8px;
+    font-weight: 700;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+}
