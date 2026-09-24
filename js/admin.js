@@ -454,6 +454,9 @@ scoreGames.addEventListener("click", async (event) => {
 
   message.textContent = "Score saved.";
   message.hidden = false;
+  setTimeout(() => {
+  message.hidden = true;
+}, 2500);
 
   saveButton.textContent = "Update Score";
   saveButton.disabled = false;
@@ -504,7 +507,7 @@ async function loadScoreGames() {
     `)
     .eq("league", league)
     .eq("division", division)
-    .order("game_date", { ascending: false })
+    .order("game_date", { ascending: true })
     .order("game_time", { ascending: true });
 
   if (error) {
