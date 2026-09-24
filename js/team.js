@@ -31,7 +31,7 @@ teamLeagueLabel.textContent = `${leagueName} Softball`;
 
 teamDivisionLabel.textContent = `${selectedDivision || ""} Division`;
 
-document.title = `${selectedTeam || "Team"} | Port St. Lucie Softball League`;
+document.title = `${selectedTeam || "Team"} Softball League`;
 
 // ======================================================
 // TEAM SCHEDULE
