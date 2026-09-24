@@ -886,3 +886,194 @@ th:last-child {
     color: var(--muted);
   }
 }
+/* ======================================================
+   ADMIN
+====================================================== */
+
+.admin-shell {
+  padding-top: 24px;
+  padding-bottom: 50px;
+}
+
+.admin-card,
+#admin-dashboard {
+  max-width: 700px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #d2dce0;
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: 0 4px 14px rgba(12, 48, 62, 0.06);
+}
+
+.admin-card h2,
+.admin-dashboard-header h2 {
+  margin-top: 0;
+}
+
+
+/* ======================================================
+   ADMIN FORMS
+====================================================== */
+
+.admin-field {
+  margin-bottom: 18px;
+}
+
+.admin-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 700;
+  color: #0d3040;
+}
+
+.admin-field input,
+.admin-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #cbd5da;
+  border-radius: 5px;
+  background: #fff;
+  color: #102d3a;
+  font: inherit;
+  font-size: 16px;
+}
+
+.admin-field input:focus,
+.admin-field select:focus {
+  outline: 2px solid #079b99;
+  outline-offset: 1px;
+}
+
+.admin-login-btn {
+  margin-top: 4px;
+}
+
+.admin-forgot-btn {
+  display: block;
+  margin-top: 15px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #087f82;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-forgot-btn:hover {
+  text-decoration: underline;
+}
+
+.admin-error {
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border-radius: 5px;
+  background: #f2f6f7;
+  color: #536b77;
+}
+
+
+/* ======================================================
+   ADMIN DASHBOARD
+====================================================== */
+
+.admin-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.admin-dashboard-header h2 {
+  margin-bottom: 0;
+}
+
+.admin-menu {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.admin-menu-card {
+  min-height: 140px;
+  padding: 22px 18px;
+  border: 1px solid #ccd8dd;
+  border-radius: 7px;
+  background: #fff;
+  color: #0d3040;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.admin-menu-card:hover {
+  transform: translateY(-2px);
+  border-color: #079b99;
+  box-shadow: 0 5px 14px rgba(12, 48, 62, 0.1);
+}
+
+.admin-menu-card strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.admin-menu-card span {
+  display: block;
+  color: #617681;
+  line-height: 1.4;
+}
+
+
+/* ======================================================
+   ADMIN MOBILE
+====================================================== */
+
+@media (max-width: 650px) {
+
+  .admin-shell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .admin-card,
+  #admin-dashboard {
+    padding: 20px;
+  }
+
+  .admin-menu {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-menu-card {
+    min-height: auto;
+  }
+
+  .admin-dashboard-header {
+    align-items: flex-start;
+  }
+}
+/* Compact hero for admin tools */
+
+.admin-hero {
+  padding-top: 45px;
+  padding-bottom: 45px;
+}
+
+.admin-hero h1 {
+  margin-bottom: 5px;
+}
+
+@media (max-width: 650px) {
+  .admin-hero {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
