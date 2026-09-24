@@ -14,6 +14,75 @@ const supabaseClient = supabase.createClient(
 // ======================================================
 // ELEMENTS
 // ======================================================
+const gameEditor = document.querySelector("#game-editor");
+const gameEditorTitle = document.querySelector("#game-editor-title");
+const gameForm = document.querySelector("#game-form");
+
+const gameDateInput = document.querySelector("#game-date-input");
+const gameTimeInput = document.querySelector("#game-time-input");
+
+const gameAwayTeam = document.querySelector("#game-away-team");
+const gameHomeTeam = document.querySelector("#game-home-team");
+
+const gameLocationInput =
+  document.querySelector("#game-location-input");
+
+const cancelGameEdit =
+  document.querySelector("#cancel-game-edit");
+
+const deleteGameButton =
+  document.querySelector("#delete-game-btn");
+
+const gameFormMessage =
+  document.querySelector("#game-form-message");
+
+let editingGameId = null;
+const scheduleManager =
+  document.querySelector("#schedule-manager");
+
+const adminScheduleLeague =
+  document.querySelector("#admin-schedule-league");
+
+const adminScheduleDivision =
+  document.querySelector("#admin-schedule-division");
+
+const adminScheduleList =
+  document.querySelector("#admin-schedule-list");
+
+const adminScheduleEmpty =
+  document.querySelector("#admin-schedule-empty");
+
+const addGameButton =
+  document.querySelector("#add-game-btn");
+const teamEditor = document.querySelector("#team-editor");
+const teamEditorTitle = document.querySelector("#team-editor-title");
+const teamForm = document.querySelector("#team-form");
+
+const teamNameInput = document.querySelector("#team-name-input");
+const teamEditLeague = document.querySelector("#team-edit-league");
+const teamEditDivision = document.querySelector("#team-edit-division");
+
+const cancelTeamEdit = document.querySelector("#cancel-team-edit");
+const deleteTeamButton = document.querySelector("#delete-team-btn");
+const teamFormMessage = document.querySelector("#team-form-message");
+
+let editingTeamId = null;
+const teamsManager = document.querySelector("#teams-manager");
+
+const adminTeamLeague =
+  document.querySelector("#admin-team-league");
+
+const adminTeamDivision =
+  document.querySelector("#admin-team-division");
+
+const adminTeamList =
+  document.querySelector("#admin-team-list");
+
+const adminTeamsEmpty =
+  document.querySelector("#admin-teams-empty");
+
+const addTeamButton =
+  document.querySelector("#add-team-btn");
 
 const adminLogin = document.querySelector("#admin-login");
 const adminDashboard = document.querySelector("#admin-dashboard");
@@ -484,6 +553,627 @@ async function loadScoreGames() {
   renderScoreGames(games);
 }
 
+// ======================================================
+// TEAM MANAGER FILTERS
+// ======================================================
+
+const adminTeamDivisions = {
+  mens: ["Lower", "Middle", "Upper"],
+  coed: ["Social", "Lower", "Middle/Upper"],
+};
+
+function renderAdminTeamDivisions() {
+  const league = adminTeamLeague.value;
+
+  adminTeamDivision.innerHTML = "";
+
+  adminTeamDivisions[league].forEach((division) => {
+    const option = document.createElement("option");
+
+    option.value = division;
+    option.textContent = division;
+
+    adminTeamDivision.appendChild(option);
+  });
+}
+
+// ======================================================
+// TEAM EDITOR
+// ======================================================
+
+function renderTeamEditorDivisions(selectedDivision = null) {
+  const league = teamEditLeague.value;
+
+  teamEditDivision.innerHTML = "";
+
+  adminTeamDivisions[league].forEach((division) => {
+    const option = document.createElement("option");
+
+    option.value = division;
+    option.textContent = division;
+
+    if (division === selectedDivision) {
+      option.selected = true;
+    }
+
+    teamEditDivision.appendChild(option);
+  });
+}
+
+function openAddTeamEditor() {
+  editingTeamId = null;
+
+  teamEditorTitle.textContent = "Add Team";
+  teamNameInput.value = "";
+
+  teamEditLeague.value = adminTeamLeague.value;
+
+  renderTeamEditorDivisions(adminTeamDivision.value);
+
+  deleteTeamButton.hidden = true;
+  teamFormMessage.hidden = true;
+
+  teamEditor.hidden = false;
+  adminTeamList.hidden = true;
+  addTeamButton.hidden = true;
+}
+
+function closeTeamEditor() {
+  editingTeamId = null;
+
+  teamEditor.hidden = true;
+  adminTeamList.hidden = false;
+  addTeamButton.hidden = false;
+
+  teamForm.reset();
+  teamFormMessage.hidden = true;
+}
+
+addTeamButton.addEventListener("click", () => {
+  openAddTeamEditor();
+});
+
+cancelTeamEdit.addEventListener("click", () => {
+  closeTeamEditor();
+});
+
+teamEditLeague.addEventListener("change", () => {
+  renderTeamEditorDivisions();
+});
+
+// ======================================================
+// EDIT TEAM
+// ======================================================
+
+adminTeamList.addEventListener("click", (event) => {
+  const editButton = event.target.closest(".admin-edit-team");
+
+  if (!editButton) {
+    return;
+  }
+
+  editingTeamId = editButton.dataset.teamId;
+
+  const teamName = editButton.dataset.teamName;
+
+  teamEditorTitle.textContent = "Edit Team";
+  teamNameInput.value = teamName;
+
+  teamEditLeague.value = adminTeamLeague.value;
+
+  renderTeamEditorDivisions(adminTeamDivision.value);
+
+  deleteTeamButton.hidden = false;
+  teamFormMessage.hidden = true;
+
+  teamEditor.hidden = false;
+  adminTeamList.hidden = true;
+  addTeamButton.hidden = true;
+});
+
+// ======================================================
+// SAVE TEAM
+// ======================================================
+
+teamForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const name = teamNameInput.value.trim();
+  const league = teamEditLeague.value;
+  const division = teamEditDivision.value;
+
+  teamFormMessage.hidden = true;
+  teamFormMessage.textContent = "";
+
+  if (!name) {
+    teamFormMessage.textContent = "Enter a team name.";
+    teamFormMessage.hidden = false;
+    return;
+  }
+
+  const saveButton = teamForm.querySelector('button[type="submit"]');
+
+  saveButton.disabled = true;
+  saveButton.textContent = "Saving...";
+
+  let error;
+
+  // Edit existing team
+  if (editingTeamId) {
+    const result = await supabaseClient
+      .from("teams")
+      .update({
+        name,
+        league,
+        division,
+      })
+      .eq("id", editingTeamId);
+
+    error = result.error;
+  }
+
+  // Add new team
+  else {
+    const result = await supabaseClient
+      .from("teams")
+      .insert({
+        name,
+        league,
+        division,
+      });
+
+    error = result.error;
+  }
+
+  saveButton.disabled = false;
+  saveButton.textContent = "Save Team";
+
+  if (error) {
+    console.error("Could not save team:", error);
+
+    teamFormMessage.textContent =
+      "Team could not be saved. Please try again.";
+
+    teamFormMessage.hidden = false;
+    return;
+  }
+
+  // Switch the main filters to wherever this team now belongs.
+  adminTeamLeague.value = league;
+
+  renderAdminTeamDivisions();
+
+  adminTeamDivision.value = division;
+
+  closeTeamEditor();
+  await loadAdminTeams();
+});
+
+// ======================================================
+// DELETE TEAM
+// ======================================================
+
+deleteTeamButton.addEventListener("click", async () => {
+  if (!editingTeamId) {
+    return;
+  }
+
+  const teamName = teamNameInput.value.trim();
+
+  const confirmed = window.confirm(
+    `Delete ${teamName}?\n\nThis should only be done when setting up a new season.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  teamFormMessage.hidden = true;
+  teamFormMessage.textContent = "";
+
+  deleteTeamButton.disabled = true;
+  deleteTeamButton.textContent = "Checking...";
+
+  // Check whether this team is still used in any games.
+  const { count: homeGameCount, error: homeError } =
+    await supabaseClient
+      .from("games")
+      .select("id", { count: "exact", head: true })
+      .eq("home_team_id", editingTeamId);
+
+  const { count: awayGameCount, error: awayError } =
+    await supabaseClient
+      .from("games")
+      .select("id", { count: "exact", head: true })
+      .eq("away_team_id", editingTeamId);
+
+  if (homeError || awayError) {
+    console.error(
+      "Could not check team games:",
+      homeError || awayError
+    );
+
+    teamFormMessage.textContent =
+      "We couldn't check this team's schedule. Nothing was deleted.";
+
+    teamFormMessage.hidden = false;
+
+    deleteTeamButton.disabled = false;
+    deleteTeamButton.textContent = "Delete Team";
+
+    return;
+  }
+
+  const gameCount =
+    (homeGameCount || 0) + (awayGameCount || 0);
+
+  // Don't allow deletion while games still reference the team.
+  if (gameCount > 0) {
+    teamFormMessage.textContent =
+      `This team is still connected to ${gameCount} game${gameCount === 1 ? "" : "s"}. Clear the season schedule before deleting the team.`;
+
+    teamFormMessage.hidden = false;
+
+    deleteTeamButton.disabled = false;
+    deleteTeamButton.textContent = "Delete Team";
+
+    return;
+  }
+
+  // Safe to delete.
+  const { error } = await supabaseClient
+    .from("teams")
+    .delete()
+    .eq("id", editingTeamId);
+
+  deleteTeamButton.disabled = false;
+  deleteTeamButton.textContent = "Delete Team";
+
+  if (error) {
+    console.error("Could not delete team:", error);
+
+    teamFormMessage.textContent =
+      "Team could not be deleted. Please try again.";
+
+    teamFormMessage.hidden = false;
+
+    return;
+  }
+
+  closeTeamEditor();
+  await loadAdminTeams();
+});
+
+// ======================================================
+// LOAD TEAMS
+// ======================================================
+
+async function loadAdminTeams() {
+  const league = adminTeamLeague.value;
+  const division = adminTeamDivision.value;
+
+  adminTeamList.innerHTML = "";
+  adminTeamsEmpty.hidden = true;
+
+  const { data: teams, error } = await supabaseClient
+    .from("teams")
+    .select("id, name, league, division")
+    .eq("league", league)
+    .eq("division", division)
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Could not load teams:", error);
+
+    adminTeamList.innerHTML = `
+      <p class="admin-error">
+        We couldn't load the teams.
+      </p>
+    `;
+
+    return;
+  }
+
+  if (!teams || teams.length === 0) {
+    adminTeamsEmpty.hidden = false;
+    return;
+  }
+
+  renderAdminTeams(teams);
+}
+
+
+// ======================================================
+// RENDER TEAMS
+// ======================================================
+
+function renderAdminTeams(teams) {
+  adminTeamList.innerHTML = "";
+
+  teams.forEach((team) => {
+    const row = document.createElement("div");
+
+    row.className = "admin-team-row";
+
+    row.innerHTML = `
+      <strong>${team.name}</strong>
+
+      <button
+        type="button"
+        class="filter-btn admin-edit-team"
+        data-team-id="${team.id}"
+        data-team-name="${team.name}"
+      >
+        Edit
+      </button>
+    `;
+
+    adminTeamList.appendChild(row);
+  });
+}
+
+
+// ======================================================
+// TEAM FILTER CHANGES
+// ======================================================
+
+adminTeamLeague.addEventListener("change", () => {
+  renderAdminTeamDivisions();
+  loadAdminTeams();
+});
+
+adminTeamDivision.addEventListener("change", () => {
+  loadAdminTeams();
+});
+
+renderAdminTeamDivisions();
+
+// ======================================================
+// SCHEDULE MANAGER FILTERS
+// ======================================================
+
+const adminScheduleDivisions = {
+  mens: ["Lower", "Middle", "Upper"],
+  coed: ["Social", "Lower", "Middle/Upper"],
+};
+
+function renderAdminScheduleDivisions() {
+  const league = adminScheduleLeague.value;
+
+  adminScheduleDivision.innerHTML = "";
+
+  adminScheduleDivisions[league].forEach((division) => {
+    const option = document.createElement("option");
+
+    option.value = division;
+    option.textContent = division;
+
+    adminScheduleDivision.appendChild(option);
+  });
+}
+
+
+// ======================================================
+// GAME EDITOR
+// ======================================================
+
+async function loadGameEditorTeams(
+  selectedHomeTeamId = null,
+  selectedAwayTeamId = null
+) {
+  const league = adminScheduleLeague.value;
+  const division = adminScheduleDivision.value;
+
+  gameHomeTeam.innerHTML = "";
+  gameAwayTeam.innerHTML = "";
+
+  const { data: teams, error } = await supabaseClient
+    .from("teams")
+    .select("id, name")
+    .eq("league", league)
+    .eq("division", division)
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Could not load teams for game editor:", error);
+
+    gameFormMessage.textContent =
+      "We couldn't load the teams. Please try again.";
+
+    gameFormMessage.hidden = false;
+    return;
+  }
+
+  teams.forEach((team) => {
+    const homeOption = document.createElement("option");
+    homeOption.value = team.id;
+    homeOption.textContent = team.name;
+
+    if (String(team.id) === String(selectedHomeTeamId)) {
+      homeOption.selected = true;
+    }
+
+    gameHomeTeam.appendChild(homeOption);
+
+    const awayOption = document.createElement("option");
+    awayOption.value = team.id;
+    awayOption.textContent = team.name;
+
+    if (String(team.id) === String(selectedAwayTeamId)) {
+      awayOption.selected = true;
+    }
+
+    gameAwayTeam.appendChild(awayOption);
+  });
+}
+
+
+async function openAddGameEditor() {
+  editingGameId = null;
+
+  gameEditorTitle.textContent = "Add Game";
+
+  gameForm.reset();
+  gameFormMessage.hidden = true;
+  deleteGameButton.hidden = true;
+
+  await loadGameEditorTeams();
+
+  gameEditor.hidden = false;
+  adminScheduleList.hidden = true;
+  adminScheduleEmpty.hidden = true;
+  addGameButton.hidden = true;
+}
+
+
+function closeGameEditor() {
+  editingGameId = null;
+
+  gameEditor.hidden = true;
+  adminScheduleList.hidden = false;
+  addGameButton.hidden = false;
+
+  gameForm.reset();
+  gameFormMessage.hidden = true;
+}
+
+
+addGameButton.addEventListener("click", () => {
+  openAddGameEditor();
+});
+
+
+cancelGameEdit.addEventListener("click", () => {
+  closeGameEditor();
+});
+
+// ======================================================
+// LOAD ADMIN SCHEDULE
+// ======================================================
+
+async function loadAdminSchedule() {
+  const league = adminScheduleLeague.value;
+  const division = adminScheduleDivision.value;
+
+  adminScheduleList.innerHTML = "";
+  adminScheduleEmpty.hidden = true;
+
+  const { data: games, error } = await supabaseClient
+    .from("games")
+    .select(`
+      id,
+      game_date,
+      game_time,
+      location,
+      status,
+      home_score,
+      away_score,
+      home_team:teams!games_home_team_id_fkey (
+        id,
+        name
+      ),
+      away_team:teams!games_away_team_id_fkey (
+        id,
+        name
+      )
+    `)
+    .eq("league", league)
+    .eq("division", division)
+    .order("game_date", { ascending: true })
+    .order("game_time", { ascending: true });
+
+  if (error) {
+    console.error("Could not load schedule:", error);
+
+    adminScheduleList.innerHTML = `
+      <p class="admin-error">
+        We couldn't load the schedule.
+      </p>
+    `;
+
+    return;
+  }
+
+  if (!games || games.length === 0) {
+    adminScheduleEmpty.hidden = false;
+    return;
+  }
+
+  renderAdminSchedule(games);
+}
+
+
+// ======================================================
+// RENDER ADMIN SCHEDULE
+// ======================================================
+
+function renderAdminSchedule(games) {
+  adminScheduleList.innerHTML = "";
+
+  games.forEach((game) => {
+    const card = document.createElement("div");
+    card.className = "admin-game-card";
+
+    const date = new Date(`${game.game_date}T00:00:00`);
+
+    const formattedDate = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const formattedTime = formatAdminGameTime(game.game_time);
+
+    card.innerHTML = `
+      <div class="admin-game-meta">
+        <div>
+          <strong>${formattedDate}</strong>
+          <span>${formattedTime}</span>
+        </div>
+
+        <span>${game.location || ""}</span>
+      </div>
+
+      <div class="admin-schedule-matchup">
+        <div>
+          <span class="admin-team-label">Away</span>
+          <strong>${game.away_team?.name || "Away Team"}</strong>
+        </div>
+
+        <div>
+          <span class="admin-team-label">Home</span>
+          <strong>${game.home_team?.name || "Home Team"}</strong>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="filter-btn admin-edit-game"
+        data-game-id="${game.id}"
+      >
+        Edit Game
+      </button>
+    `;
+
+    adminScheduleList.appendChild(card);
+  });
+}
+
+
+// ======================================================
+// SCHEDULE FILTER CHANGES
+// ======================================================
+
+adminScheduleLeague.addEventListener("change", () => {
+  renderAdminScheduleDivisions();
+  loadAdminSchedule();
+});
+
+adminScheduleDivision.addEventListener("change", () => {
+  loadAdminSchedule();
+});
+
+renderAdminScheduleDivisions();
 
 // ======================================================
 // ADMIN DASHBOARD NAVIGATION
@@ -491,13 +1181,18 @@ async function loadScoreGames() {
 
 function showAdminMenu() {
   adminMenu.hidden = false;
+
   scoresManager.hidden = true;
+  teamsManager.hidden = true;
+  scheduleManager.hidden = true;
 }
 
 function showAdminManager(manager) {
   adminMenu.hidden = true;
 
   scoresManager.hidden = manager !== "scores";
+  teamsManager.hidden = manager !== "teams";
+  scheduleManager.hidden = manager !== "schedule";
 }
 
 adminMenuCards.forEach((button) => {
@@ -507,6 +1202,14 @@ adminMenuCards.forEach((button) => {
     if (page === "scores") {
   showAdminManager("scores");
   loadScoreGames();
+}
+if (page === "teams") {
+  showAdminManager("teams");
+  loadAdminTeams();
+}
+if (page === "schedule") {
+  showAdminManager("schedule");
+  loadAdminSchedule();
 }
   });
 });

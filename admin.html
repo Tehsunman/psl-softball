@@ -129,6 +129,199 @@
               No games found for this division.
             </p>
           </section>
+          <!-- TEAMS MANAGER -->
+          <section id="teams-manager" class="admin-manager" hidden>
+            <button type="button" class="admin-back-btn" data-admin-back>
+              ← Back to Dashboard
+            </button>
+
+            <div class="admin-section-heading">
+              <p class="eyebrow">League Management</p>
+              <h2>Teams</h2>
+              <p>
+                Add teams, rename teams, or remove inactive teams from future
+                use.
+              </p>
+            </div>
+
+            <div class="admin-filter-row">
+              <div class="admin-field">
+                <label for="admin-team-league">League</label>
+
+                <select id="admin-team-league">
+                  <option value="mens">Men's</option>
+                  <option value="coed">Coed</option>
+                </select>
+              </div>
+
+              <div class="admin-field">
+                <label for="admin-team-division">Division</label>
+                <select id="admin-team-division"></select>
+              </div>
+            </div>
+
+            <button type="button" id="add-team-btn" class="filter-btn active">
+              + Add Team
+            </button>
+
+            <div id="admin-team-list" class="admin-team-list"></div>
+
+            <p id="admin-teams-empty" class="admin-empty" hidden>
+              No teams found in this division.
+            </p>
+            <!-- TEAM EDITOR -->
+            <div id="team-editor" class="admin-editor" hidden>
+              <div class="admin-section-heading">
+                <h3 id="team-editor-title">Add Team</h3>
+              </div>
+
+              <form id="team-form">
+                <div class="admin-field">
+                  <label for="team-name-input">Team Name</label>
+                  <input id="team-name-input" type="text" required />
+                </div>
+
+                <div class="admin-field">
+                  <label for="team-edit-league">League</label>
+                  <select id="team-edit-league">
+                    <option value="mens">Men's</option>
+                    <option value="coed">Coed</option>
+                  </select>
+                </div>
+
+                <div class="admin-field">
+                  <label for="team-edit-division">Division</label>
+                  <select id="team-edit-division"></select>
+                </div>
+
+                <div class="admin-editor-actions">
+                  <button type="submit" class="filter-btn active">
+                    Save Team
+                  </button>
+
+                  <button
+                    type="button"
+                    id="cancel-team-edit"
+                    class="filter-btn"
+                  >
+                    Cancel
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  id="delete-team-btn"
+                  class="admin-delete-btn"
+                  hidden
+                >
+                  Delete Team
+                </button>
+
+                <p id="team-form-message" class="admin-save-message" hidden></p>
+              </form>
+            </div>
+          </section>
+          <!-- SCHEDULE MANAGER -->
+          <section id="schedule-manager" class="admin-manager" hidden>
+            <button type="button" class="admin-back-btn" data-admin-back>
+              ← Back to Dashboard
+            </button>
+
+            <div class="admin-section-heading">
+              <p class="eyebrow">League Management</p>
+              <h2>Schedule</h2>
+              <p>Add games or make changes to the current schedule.</p>
+            </div>
+
+            <div class="admin-filter-row">
+              <div class="admin-field">
+                <label for="admin-schedule-league">League</label>
+
+                <select id="admin-schedule-league">
+                  <option value="mens">Men's</option>
+                  <option value="coed">Coed</option>
+                </select>
+              </div>
+
+              <div class="admin-field">
+                <label for="admin-schedule-division">Division</label>
+                <select id="admin-schedule-division"></select>
+              </div>
+            </div>
+
+            <button type="button" id="add-game-btn" class="filter-btn active">
+              + Add Game
+            </button>
+
+            <div id="admin-schedule-list" class="admin-games"></div>
+
+            <p id="admin-schedule-empty" class="admin-empty" hidden>
+              No games found in this division.
+            </p>
+            <!-- GAME EDITOR -->
+            <div id="game-editor" class="admin-editor" hidden>
+              <div class="admin-section-heading">
+                <h3 id="game-editor-title">Add Game</h3>
+              </div>
+
+              <form id="game-form">
+                <div class="admin-field">
+                  <label for="game-date-input">Date</label>
+                  <input id="game-date-input" type="date" required />
+                </div>
+
+                <div class="admin-field">
+                  <label for="game-time-input">Time</label>
+                  <input id="game-time-input" type="time" required />
+                </div>
+
+                <div class="admin-field">
+                  <label for="game-away-team">Away Team</label>
+                  <select id="game-away-team" required></select>
+                </div>
+
+                <div class="admin-field">
+                  <label for="game-home-team">Home Team</label>
+                  <select id="game-home-team" required></select>
+                </div>
+
+                <div class="admin-field">
+                  <label for="game-location-input">Field</label>
+                  <input
+                    id="game-location-input"
+                    type="text"
+                    placeholder="Example: SHC 3"
+                    required
+                  />
+                </div>
+
+                <div class="admin-editor-actions">
+                  <button type="submit" class="filter-btn active">
+                    Save Game
+                  </button>
+
+                  <button
+                    type="button"
+                    id="cancel-game-edit"
+                    class="filter-btn"
+                  >
+                    Cancel
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  id="delete-game-btn"
+                  class="admin-delete-btn"
+                  hidden
+                >
+                  Delete Game
+                </button>
+
+                <p id="game-form-message" class="admin-save-message" hidden></p>
+              </form>
+            </div>
+          </section>
         </div>
       </section>
     </main>

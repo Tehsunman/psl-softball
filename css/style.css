@@ -1224,3 +1224,129 @@ th:last-child {
     grid-template-columns: 1fr 70px;
   }
 }
+
+/* ======================================================
+   ADMIN TEAM MANAGER
+====================================================== */
+
+#add-team-btn {
+  margin-bottom: 20px;
+}
+
+.admin-team-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-team-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 18px;
+  border: 1px solid #ccd8dd;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.admin-team-row strong {
+  color: #0d3040;
+}
+
+.admin-team-row .filter-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 650px) {
+  .admin-team-row {
+    padding: 14px;
+  }
+}
+
+/* ======================================================
+   ADMIN EDITOR
+====================================================== */
+
+.admin-editor {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid #ccd8dd;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.admin-editor h3 {
+  margin-top: 0;
+  color: #0d3040;
+}
+
+.admin-editor-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.admin-delete-btn {
+  margin-top: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #a33131;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-delete-btn:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+  .admin-editor {
+    padding: 16px;
+  }
+
+  .admin-editor-actions {
+    flex-wrap: wrap;
+  }
+}
+/* ======================================================
+   ADMIN SCHEDULE MANAGER
+====================================================== */
+
+#add-game-btn {
+  margin-bottom: 20px;
+}
+
+.admin-schedule-matchup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.admin-schedule-matchup > div {
+  padding: 12px;
+  border: 1px solid #e0e7ea;
+  border-radius: 5px;
+}
+
+.admin-team-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #617681;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-schedule-matchup strong {
+  color: #0d3040;
+}
+
+@media (max-width: 650px) {
+  .admin-schedule-matchup {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
