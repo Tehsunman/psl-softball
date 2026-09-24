@@ -989,6 +989,8 @@ async function loadGameEditorTeams(
 
 async function openAddGameEditor() {
   editingGameId = null;
+  // Move the editor back to its normal position for Add Game
+  adminScheduleList.insertAdjacentElement("afterend", gameEditor);
 
   gameEditorTitle.textContent = "Add Game";
 
@@ -999,17 +1001,19 @@ async function openAddGameEditor() {
   await loadGameEditorTeams();
 
   gameEditor.hidden = false;
-  adminScheduleList.hidden = true;
-  adminScheduleEmpty.hidden = true;
-  addGameButton.hidden = true;
-}
+adminScheduleEmpty.hidden = true;
+addGameButton.hidden = true;
+
+gameEditor.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
 
 
 function closeGameEditor() {
   editingGameId = null;
 
   gameEditor.hidden = true;
-  adminScheduleList.hidden = false;
   addGameButton.hidden = false;
 
   gameForm.reset();
@@ -1083,9 +1087,13 @@ adminScheduleList.addEventListener("click", async (event) => {
   deleteGameButton.hidden = false;
 
   gameEditor.hidden = false;
-  adminScheduleList.hidden = true;
-  adminScheduleEmpty.hidden = true;
-  addGameButton.hidden = true;
+adminScheduleEmpty.hidden = true;
+addGameButton.hidden = true;
+
+// Move the editor directly below the game being edited
+const gameCard = editButton.closest(".admin-game-card");
+
+gameCard.insertAdjacentElement("afterend", gameEditor);
 });
 
 // ======================================================
