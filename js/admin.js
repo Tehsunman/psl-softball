@@ -225,9 +225,176 @@ function renderScoreDivisions() {
 
 scoreLeague.addEventListener("change", () => {
   renderScoreDivisions();
+  loadScoreGames();
 });
 
+scoreDivision.addEventListener("change", () => {
+  loadScoreGames();
+});
+// ======================================================
+// RENDER SCORE GAMES
+// ======================================================
+
+function renderScoreGames(games) {
+  scoreGames.innerHTML = "";
+
+  games.forEach((game) => {
+    const card = document.createElement("div");
+    card.className = "admin-game-card";
+
+    const date = new Date(`${game.game_date}T00:00:00`);
+
+    const formattedDate = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+
+    const formattedTime = formatAdminGameTime(game.game_time);
+
+    const homeScore =
+      game.home_score === null ? "" : game.home_score;
+
+    const awayScore =
+      game.away_score === null ? "" : game.away_score;
+
+    const isFinal = game.status === "final";
+
+    card.innerHTML = `
+      <div class="admin-game-meta">
+        <div>
+          <strong>${formattedDate}</strong>
+          <span>${formattedTime}</span>
+        </div>
+
+        <span>${game.location || ""}</span>
+      </div>
+
+      ${
+        isFinal
+          ? `<div class="admin-game-status">Final</div>`
+          : ""
+      }
+
+      <div class="admin-score-team">
+        <label for="home-score-${game.id}">
+          ${game.home_team?.name || "Home Team"}
+        </label>
+
+        <input
+          id="home-score-${game.id}"
+          type="number"
+          min="0"
+          inputmode="numeric"
+          value="${homeScore}"
+          data-home-score
+        />
+      </div>
+
+      <div class="admin-score-team">
+        <label for="away-score-${game.id}">
+          ${game.away_team?.name || "Away Team"}
+        </label>
+
+        <input
+          id="away-score-${game.id}"
+          type="number"
+          min="0"
+          inputmode="numeric"
+          value="${awayScore}"
+          data-away-score
+        />
+      </div>
+
+      <button
+        type="button"
+        class="filter-btn active admin-save-score"
+        data-game-id="${game.id}"
+      >
+        ${isFinal ? "Update Score" : "Save Score"}
+      </button>
+
+      <p class="admin-save-message" hidden></p>
+    `;
+
+    scoreGames.appendChild(card);
+  });
+}
+
+
+// ======================================================
+// FORMAT GAME TIME
+// ======================================================
+
+function formatAdminGameTime(time) {
+  if (!time) {
+    return "";
+  }
+
+  const [hourString, minute] = time.split(":");
+  let hour = Number(hourString);
+
+  const period = hour >= 12 ? "PM" : "AM";
+
+  hour = hour % 12 || 12;
+
+  return `${hour}:${minute} ${period}`;
+}
+
 renderScoreDivisions();
+// ======================================================
+// LOAD GAMES FOR SCORES
+// ======================================================
+
+async function loadScoreGames() {
+  const league = scoreLeague.value;
+  const division = scoreDivision.value;
+
+  scoreGames.innerHTML = "";
+  scoresEmpty.hidden = true;
+
+  const { data: games, error } = await supabaseClient
+    .from("games")
+    .select(`
+      id,
+      game_date,
+      game_time,
+      location,
+      home_score,
+      away_score,
+      status,
+      home_team:teams!games_home_team_id_fkey (
+        id,
+        name
+      ),
+      away_team:teams!games_away_team_id_fkey (
+        id,
+        name
+      )
+    `)
+    .eq("league", league)
+    .eq("division", division)
+    .order("game_date", { ascending: false })
+    .order("game_time", { ascending: true });
+
+  if (error) {
+    console.error("Could not load games:", error);
+
+    scoreGames.innerHTML = `
+      <p class="admin-error">
+        We couldn't load the games.
+      </p>
+    `;
+
+    return;
+  }
+
+  if (!games || games.length === 0) {
+    scoresEmpty.hidden = false;
+    return;
+  }
+
+  renderScoreGames(games);
+}
 
 initializeAdmin();
 // ======================================================
@@ -250,8 +417,9 @@ adminMenuCards.forEach((button) => {
     const page = button.dataset.adminPage;
 
     if (page === "scores") {
-      showAdminManager("scores");
-    }
+  showAdminManager("scores");
+  loadScoreGames();
+}
   });
 });
 

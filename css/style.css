@@ -1077,3 +1077,150 @@ th:last-child {
     padding-bottom: 32px;
   }
 }
+/* ======================================================
+   ADMIN SCORE MANAGER
+====================================================== */
+
+.admin-manager {
+  margin-top: 10px;
+}
+
+.admin-back-btn {
+  margin-bottom: 25px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #087f82;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-back-btn:hover {
+  text-decoration: underline;
+}
+
+.admin-section-heading {
+  margin-bottom: 25px;
+}
+
+.admin-section-heading h2 {
+  margin: 4px 0 6px;
+}
+
+.admin-section-heading p:last-child {
+  margin-bottom: 0;
+  color: #617681;
+}
+
+.admin-filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.admin-games {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-game-card {
+  padding: 20px;
+  border: 1px solid #ccd8dd;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.admin-game-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e7ea;
+  color: #617681;
+}
+
+.admin-game-meta div {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-game-meta strong {
+  color: #0d3040;
+}
+
+.admin-game-status {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #0d3040;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-score-team {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.admin-score-team label {
+  font-weight: 700;
+  color: #0d3040;
+}
+
+.admin-score-team input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #cbd5da;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 18px;
+  text-align: center;
+}
+
+.admin-save-score {
+  margin-top: 10px;
+}
+
+.admin-save-message {
+  margin: 12px 0 0;
+  font-weight: 700;
+}
+
+.admin-empty {
+  padding: 25px;
+  border: 1px dashed #ccd8dd;
+  border-radius: 6px;
+  color: #617681;
+  text-align: center;
+}
+
+
+@media (max-width: 650px) {
+
+  .admin-filter-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .admin-game-card {
+    padding: 16px;
+  }
+
+  .admin-game-meta {
+    font-size: 14px;
+  }
+
+  .admin-score-team {
+    grid-template-columns: 1fr 70px;
+  }
+}
