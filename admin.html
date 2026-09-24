@@ -94,6 +94,41 @@
               <span>Add, rename or deactivate teams</span>
             </button>
           </div>
+          <!-- SCORES MANAGER -->
+          <section id="scores-manager" class="admin-manager" hidden>
+            <button type="button" class="admin-back-btn" data-admin-back>
+              ← Back to Dashboard
+            </button>
+
+            <div class="admin-section-heading">
+              <p class="eyebrow">League Management</p>
+              <h2>Scores</h2>
+              <p>Enter final scores for completed games.</p>
+            </div>
+
+            <div class="admin-filter-row">
+              <div class="admin-field">
+                <label for="score-league">League</label>
+
+                <select id="score-league">
+                  <option value="mens">Men's</option>
+                  <option value="coed">Coed</option>
+                </select>
+              </div>
+
+              <div class="admin-field">
+                <label for="score-division">Division</label>
+
+                <select id="score-division"></select>
+              </div>
+            </div>
+
+            <div id="score-games" class="admin-games"></div>
+
+            <p id="scores-empty" class="admin-empty" hidden>
+              No games found for this division.
+            </p>
+          </section>
         </div>
       </section>
     </main>

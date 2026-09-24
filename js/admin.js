@@ -24,6 +24,16 @@ const passwordInput = document.querySelector("#admin-password");
 const loginError = document.querySelector("#login-error");
 
 const logoutButton = document.querySelector("#logout-btn");
+const adminMenu = document.querySelector(".admin-menu");
+const adminMenuCards = document.querySelectorAll(".admin-menu-card");
+
+const scoresManager = document.querySelector("#scores-manager");
+const scoreLeague = document.querySelector("#score-league");
+const scoreDivision = document.querySelector("#score-division");
+const scoreGames = document.querySelector("#score-games");
+const scoresEmpty = document.querySelector("#scores-empty");
+
+const adminBackButtons = document.querySelectorAll("[data-admin-back]");
 const forgotPasswordButton =
   document.querySelector("#forgot-password-btn");
 
@@ -69,6 +79,7 @@ function showLogin() {
 function showDashboard() {
   adminLogin.hidden = true;
   adminDashboard.hidden = false;
+  showAdminMenu();
 }
 
 
@@ -188,5 +199,64 @@ async function initializeAdmin() {
     showLogin();
   }
 }
+// ======================================================
+// SCORE FILTERS
+// ======================================================
+
+const scoreDivisions = {
+  mens: ["Lower", "Middle", "Upper"],
+  coed: ["Social", "Lower", "Middle/Upper"],
+};
+
+function renderScoreDivisions() {
+  const league = scoreLeague.value;
+
+  scoreDivision.innerHTML = "";
+
+  scoreDivisions[league].forEach((division) => {
+    const option = document.createElement("option");
+
+    option.value = division;
+    option.textContent = division;
+
+    scoreDivision.appendChild(option);
+  });
+}
+
+scoreLeague.addEventListener("change", () => {
+  renderScoreDivisions();
+});
+
+renderScoreDivisions();
 
 initializeAdmin();
+// ======================================================
+// ADMIN DASHBOARD NAVIGATION
+// ======================================================
+
+function showAdminMenu() {
+  adminMenu.hidden = false;
+  scoresManager.hidden = true;
+}
+
+function showAdminManager(manager) {
+  adminMenu.hidden = true;
+
+  scoresManager.hidden = manager !== "scores";
+}
+
+adminMenuCards.forEach((button) => {
+  button.addEventListener("click", () => {
+    const page = button.dataset.adminPage;
+
+    if (page === "scores") {
+      showAdminManager("scores");
+    }
+  });
+});
+
+adminBackButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    showAdminMenu();
+  });
+});
