@@ -673,6 +673,7 @@ addTeamButton.hidden = true;
 const teamRow = editButton.closest(".admin-team-row");
 
 teamRow.insertAdjacentElement("afterend", teamEditor);
+});
 
 // ======================================================
 // SAVE TEAM
