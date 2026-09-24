@@ -853,6 +853,7 @@ async function loadAdminTeams() {
   const division = adminTeamDivision.value;
 
   adminTeamList.innerHTML = "";
+  adminTeamList.hidden = false;
   adminTeamsEmpty.hidden = true;
 
   const { data: teams, error } = await supabaseClient
@@ -1048,6 +1049,198 @@ cancelGameEdit.addEventListener("click", () => {
 });
 
 // ======================================================
+// EDIT GAME
+// ======================================================
+
+adminScheduleList.addEventListener("click", async (event) => {
+  const editButton = event.target.closest(".admin-edit-game");
+
+  if (!editButton) {
+    return;
+  }
+
+  const gameId = editButton.dataset.gameId;
+
+  gameFormMessage.hidden = true;
+  gameFormMessage.textContent = "";
+
+  // Get the complete game record from Supabase
+  const { data: game, error } = await supabaseClient
+    .from("games")
+    .select(`
+      id,
+      game_date,
+      game_time,
+      location,
+      home_team_id,
+      away_team_id
+    `)
+    .eq("id", gameId)
+    .single();
+
+  if (error) {
+    console.error("Could not load game:", error);
+    window.alert("We couldn't load this game. Please try again.");
+    return;
+  }
+
+  editingGameId = game.id;
+
+  gameEditorTitle.textContent = "Edit Game";
+
+  gameDateInput.value = game.game_date;
+
+  // HTML time inputs want HH:MM instead of HH:MM:SS
+  gameTimeInput.value = game.game_time
+    ? game.game_time.slice(0, 5)
+    : "";
+
+  gameLocationInput.value = game.location || "";
+
+  await loadGameEditorTeams(
+    game.home_team_id,
+    game.away_team_id
+  );
+
+  deleteGameButton.hidden = false;
+
+  gameEditor.hidden = false;
+  adminScheduleList.hidden = true;
+  adminScheduleEmpty.hidden = true;
+  addGameButton.hidden = true;
+});
+
+// ======================================================
+// SAVE GAME
+// ======================================================
+
+gameForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const gameDate = gameDateInput.value;
+  const gameTime = gameTimeInput.value;
+  const awayTeamId = gameAwayTeam.value;
+  const homeTeamId = gameHomeTeam.value;
+  const location = gameLocationInput.value.trim();
+
+  gameFormMessage.hidden = true;
+  gameFormMessage.textContent = "";
+
+  // Make sure two different teams are selected
+  if (homeTeamId === awayTeamId) {
+    gameFormMessage.textContent =
+      "Home and away teams must be different.";
+
+    gameFormMessage.hidden = false;
+    return;
+  }
+
+  const saveButton =
+    gameForm.querySelector('button[type="submit"]');
+
+  saveButton.disabled = true;
+  saveButton.textContent = "Saving...";
+
+  const gameData = {
+    league: adminScheduleLeague.value,
+    division: adminScheduleDivision.value,
+    game_date: gameDate,
+    game_time: gameTime,
+    home_team_id: homeTeamId,
+    away_team_id: awayTeamId,
+    location: location,
+  };
+
+  let error;
+
+  // Update an existing game
+  if (editingGameId) {
+    const result = await supabaseClient
+      .from("games")
+      .update(gameData)
+      .eq("id", editingGameId);
+
+    error = result.error;
+  }
+
+  // Create a new game
+  else {
+    const result = await supabaseClient
+      .from("games")
+      .insert(gameData);
+
+    error = result.error;
+  }
+
+  saveButton.disabled = false;
+  saveButton.textContent = "Save Game";
+
+  if (error) {
+    console.error("Could not save game:", error);
+
+    // Our database already has duplicate-game protection.
+    if (error.code === "23505") {
+      gameFormMessage.textContent =
+        "This game is already on the schedule.";
+    } else {
+      gameFormMessage.textContent =
+        "Game could not be saved. Please try again.";
+    }
+
+    gameFormMessage.hidden = false;
+    return;
+  }
+
+  closeGameEditor();
+  await loadAdminSchedule();
+});
+
+// ======================================================
+// DELETE GAME
+// ======================================================
+
+deleteGameButton.addEventListener("click", async () => {
+  if (!editingGameId) {
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "Delete this game?\n\nThis will permanently remove it from the schedule."
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  gameFormMessage.hidden = true;
+  gameFormMessage.textContent = "";
+
+  deleteGameButton.disabled = true;
+  deleteGameButton.textContent = "Deleting...";
+
+  const { error } = await supabaseClient
+    .from("games")
+    .delete()
+    .eq("id", editingGameId);
+
+  deleteGameButton.disabled = false;
+  deleteGameButton.textContent = "Delete Game";
+
+  if (error) {
+    console.error("Could not delete game:", error);
+
+    gameFormMessage.textContent =
+      "Game could not be deleted. Please try again.";
+
+    gameFormMessage.hidden = false;
+    return;
+  }
+
+  closeGameEditor();
+  await loadAdminSchedule();
+});
+
+// ======================================================
 // LOAD ADMIN SCHEDULE
 // ======================================================
 
@@ -1204,6 +1397,7 @@ adminMenuCards.forEach((button) => {
   loadScoreGames();
 }
 if (page === "teams") {
+  console.log("TEAMS CLICK WORKED");
   showAdminManager("teams");
   loadAdminTeams();
 }
