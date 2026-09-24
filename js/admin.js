@@ -17,92 +17,66 @@ const supabaseClient = supabase.createClient(
 const gameEditor = document.querySelector("#game-editor");
 const gameEditorTitle = document.querySelector("#game-editor-title");
 const gameForm = document.querySelector("#game-form");
-
 const gameDateInput = document.querySelector("#game-date-input");
 const gameTimeInput = document.querySelector("#game-time-input");
-
 const gameAwayTeam = document.querySelector("#game-away-team");
 const gameHomeTeam = document.querySelector("#game-home-team");
-
 const gameLocationInput =
   document.querySelector("#game-location-input");
-
 const cancelGameEdit =
   document.querySelector("#cancel-game-edit");
-
 const deleteGameButton =
   document.querySelector("#delete-game-btn");
-
 const gameFormMessage =
   document.querySelector("#game-form-message");
-
 let editingGameId = null;
 const scheduleManager =
   document.querySelector("#schedule-manager");
-
 const adminScheduleLeague =
   document.querySelector("#admin-schedule-league");
-
 const adminScheduleDivision =
   document.querySelector("#admin-schedule-division");
-
 const adminScheduleList =
   document.querySelector("#admin-schedule-list");
-
 const adminScheduleEmpty =
   document.querySelector("#admin-schedule-empty");
-
 const addGameButton =
   document.querySelector("#add-game-btn");
 const teamEditor = document.querySelector("#team-editor");
 const teamEditorTitle = document.querySelector("#team-editor-title");
 const teamForm = document.querySelector("#team-form");
-
 const teamNameInput = document.querySelector("#team-name-input");
 const teamEditLeague = document.querySelector("#team-edit-league");
 const teamEditDivision = document.querySelector("#team-edit-division");
-
 const cancelTeamEdit = document.querySelector("#cancel-team-edit");
 const deleteTeamButton = document.querySelector("#delete-team-btn");
 const teamFormMessage = document.querySelector("#team-form-message");
-
 let editingTeamId = null;
 const teamsManager = document.querySelector("#teams-manager");
-
 const adminTeamLeague =
   document.querySelector("#admin-team-league");
-
 const adminTeamDivision =
   document.querySelector("#admin-team-division");
-
 const adminTeamList =
   document.querySelector("#admin-team-list");
-
 const adminTeamsEmpty =
   document.querySelector("#admin-teams-empty");
-
 const addTeamButton =
   document.querySelector("#add-team-btn");
-
 const adminLogin = document.querySelector("#admin-login");
 const adminDashboard = document.querySelector("#admin-dashboard");
-
 const loginForm = document.querySelector("#login-form");
 const emailInput = document.querySelector("#admin-email");
 const passwordInput = document.querySelector("#admin-password");
 const loginError = document.querySelector("#login-error");
-
 const logoutButton = document.querySelector("#logout-btn");
 const adminMenu = document.querySelector(".admin-menu");
 const adminMenuCards = document.querySelectorAll(".admin-menu-card");
-
 const scoresManager = document.querySelector("#scores-manager");
 const scoreLeague = document.querySelector("#score-league");
 const scoreDivision = document.querySelector("#score-division");
 const scoreGames = document.querySelector("#score-games");
 const scoresEmpty = document.querySelector("#scores-empty");
-
-const adminBackButtons = document.querySelectorAll("[data-admin-back]");
 const forgotPasswordButton =
   document.querySelector("#forgot-password-btn");
 
@@ -1383,13 +1357,23 @@ function showAdminMenu() {
   teamsManager.hidden = true;
   scheduleManager.hidden = true;
 }
+adminMenuCards.forEach((button) => {
+  button.classList.remove("active");
+});
 
 function showAdminManager(manager) {
-  adminMenu.hidden = true;
+  adminMenu.hidden = false;
 
   scoresManager.hidden = manager !== "scores";
   teamsManager.hidden = manager !== "teams";
   scheduleManager.hidden = manager !== "schedule";
+
+  adminMenuCards.forEach((button) => {
+    button.classList.toggle(
+      "active",
+      button.dataset.adminPage === manager
+    );
+  });
 }
 
 adminMenuCards.forEach((button) => {
@@ -1408,12 +1392,6 @@ if (page === "schedule") {
   showAdminManager("schedule");
   loadAdminSchedule();
 }
-  });
-});
-
-adminBackButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    showAdminMenu();
   });
 });
 

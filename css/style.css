@@ -1350,3 +1350,9 @@ th:last-child {
     gap: 8px;
   }
 }
+
+.admin-menu-card.active {
+  border-color: #009b98;
+  background: rgba(0, 155, 152, 0.06);
+  box-shadow: 0 0 0 1px #009b98;
+}
