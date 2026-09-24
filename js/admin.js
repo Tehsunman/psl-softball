@@ -339,6 +339,94 @@ function formatAdminGameTime(time) {
 
   return `${hour}:${minute} ${period}`;
 }
+// ======================================================
+// SAVE GAME SCORE
+// ======================================================
+
+scoreGames.addEventListener("click", async (event) => {
+  const saveButton = event.target.closest(".admin-save-score");
+
+  if (!saveButton) {
+    return;
+  }
+
+  const card = saveButton.closest(".admin-game-card");
+  const gameId = saveButton.dataset.gameId;
+
+  const homeScoreInput = card.querySelector("[data-home-score]");
+  const awayScoreInput = card.querySelector("[data-away-score]");
+  const message = card.querySelector(".admin-save-message");
+
+  const homeScore = homeScoreInput.value;
+  const awayScore = awayScoreInput.value;
+
+  message.hidden = true;
+  message.textContent = "";
+
+  // Both scores are required
+  if (homeScore === "" || awayScore === "") {
+    message.textContent = "Enter both scores before saving.";
+    message.hidden = false;
+    return;
+  }
+
+  const homeScoreNumber = Number(homeScore);
+  const awayScoreNumber = Number(awayScore);
+
+  // Prevent negative scores or invalid values
+  if (
+    !Number.isInteger(homeScoreNumber) ||
+    !Number.isInteger(awayScoreNumber) ||
+    homeScoreNumber < 0 ||
+    awayScoreNumber < 0
+  ) {
+    message.textContent = "Scores must be whole numbers of 0 or higher.";
+    message.hidden = false;
+    return;
+  }
+
+  saveButton.disabled = true;
+  saveButton.textContent = "Saving...";
+
+  const { error } = await supabaseClient
+    .from("games")
+    .update({
+      home_score: homeScoreNumber,
+      away_score: awayScoreNumber,
+      status: "final",
+    })
+    .eq("id", gameId);
+
+  if (error) {
+    console.error("Could not save score:", error);
+
+    message.textContent = "Score could not be saved. Please try again.";
+    message.hidden = false;
+
+    saveButton.disabled = false;
+    saveButton.textContent = "Save Score";
+
+    return;
+  }
+
+  message.textContent = "Score saved.";
+  message.hidden = false;
+
+  saveButton.textContent = "Update Score";
+  saveButton.disabled = false;
+
+  // Add FINAL label if this game was previously scheduled
+  if (!card.querySelector(".admin-game-status")) {
+    const status = document.createElement("div");
+
+    status.className = "admin-game-status";
+    status.textContent = "Final";
+
+    const firstScoreRow = card.querySelector(".admin-score-team");
+
+    firstScoreRow.before(status);
+  }
+});
 
 renderScoreDivisions();
 // ======================================================
@@ -396,7 +484,7 @@ async function loadScoreGames() {
   renderScoreGames(games);
 }
 
-initializeAdmin();
+
 // ======================================================
 // ADMIN DASHBOARD NAVIGATION
 // ======================================================
@@ -428,3 +516,5 @@ adminBackButtons.forEach((button) => {
     showAdminMenu();
   });
 });
+
+initializeAdmin();
