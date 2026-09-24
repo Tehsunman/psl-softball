@@ -406,12 +406,41 @@ scoreGames.addEventListener("click", async (event) => {
   message.hidden = true;
   message.textContent = "";
 
-  // Both scores are required
-  if (homeScore === "" || awayScore === "") {
-    message.textContent = "Enter both scores before saving.";
+  // If both scores are blank, clear the final score
+if (homeScore === "" && awayScore === "") {
+  saveButton.disabled = true;
+  saveButton.textContent = "Saving...";
+
+  const { error } = await supabaseClient
+    .from("games")
+    .update({
+      home_score: null,
+      away_score: null,
+      status: "scheduled",
+    })
+    .eq("id", gameId);
+
+  if (error) {
+    console.error("Could not clear score:", error);
+
+    message.textContent = "Score could not be cleared. Please try again.";
     message.hidden = false;
+
+    saveButton.disabled = false;
+    saveButton.textContent = "Update Score";
     return;
   }
+
+  await loadScoreGames();
+  return;
+}
+
+// If only one score is entered, don't save it
+if (homeScore === "" || awayScore === "") {
+  message.textContent = "Enter both scores, or clear both boxes to remove the score.";
+  message.hidden = false;
+  return;
+}
 
   const homeScoreNumber = Number(homeScore);
   const awayScoreNumber = Number(awayScore);
