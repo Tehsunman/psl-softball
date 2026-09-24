@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin | Port St. Lucie Softball League</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-ball">●</span>
+          <span>PSL Softball</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero shell admin-hero">
+        <p class="eyebrow">Port St. Lucie Softball League</p>
+        <h1>Admin</h1>
+        <p class="hero-sub">League management</p>
+      </section>
+
+      <section class="shell admin-shell">
+        <!-- LOGIN -->
+        <div id="admin-login" class="admin-card">
+          <h2>Admin Login</h2>
+
+          <form id="login-form">
+            <div class="admin-field">
+              <label for="admin-email">Email</label>
+              <input
+                id="admin-email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="admin-field">
+              <label for="admin-password">Password</label>
+              <input
+                id="admin-password"
+                type="password"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+
+            <button type="submit" class="filter-btn active admin-login-btn">
+              Log In
+            </button>
+
+            <p id="login-error" class="admin-error" hidden></p>
+          </form>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="admin-dashboard" hidden>
+          <div class="admin-dashboard-header">
+            <div>
+              <p class="eyebrow">League Administration</p>
+              <h2>Dashboard</h2>
+            </div>
+
+            <button id="logout-btn" class="filter-btn">Log Out</button>
+          </div>
+
+          <div class="admin-menu">
+            <button class="admin-menu-card" data-admin-page="schedule">
+              <strong>Schedule</strong>
+              <span>Add, edit or cancel games</span>
+            </button>
+
+            <button class="admin-menu-card" data-admin-page="scores">
+              <strong>Scores</strong>
+              <span>Enter final game scores</span>
+            </button>
+
+            <button class="admin-menu-card" data-admin-page="teams">
+              <strong>Teams</strong>
+              <span>Add, rename or deactivate teams</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
