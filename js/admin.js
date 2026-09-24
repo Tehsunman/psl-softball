@@ -602,6 +602,8 @@ function renderTeamEditorDivisions(selectedDivision = null) {
 
 function openAddTeamEditor() {
   editingTeamId = null;
+  // Move the editor back to its normal position for Add Team
+adminTeamList.insertAdjacentElement("afterend", teamEditor);
 
   teamEditorTitle.textContent = "Add Team";
   teamNameInput.value = "";
@@ -614,7 +616,6 @@ function openAddTeamEditor() {
   teamFormMessage.hidden = true;
 
   teamEditor.hidden = false;
-  adminTeamList.hidden = true;
   addTeamButton.hidden = true;
 }
 
@@ -622,8 +623,7 @@ function closeTeamEditor() {
   editingTeamId = null;
 
   teamEditor.hidden = true;
-  adminTeamList.hidden = false;
-  addTeamButton.hidden = false;
+   addTeamButton.hidden = false;
 
   teamForm.reset();
   teamFormMessage.hidden = true;
@@ -667,9 +667,12 @@ adminTeamList.addEventListener("click", (event) => {
   teamFormMessage.hidden = true;
 
   teamEditor.hidden = false;
-  adminTeamList.hidden = true;
-  addTeamButton.hidden = true;
-});
+addTeamButton.hidden = true;
+
+// Move the editor directly below the team being edited
+const teamRow = editButton.closest(".admin-team-row");
+
+teamRow.insertAdjacentElement("afterend", teamEditor);
 
 // ======================================================
 // SAVE TEAM
@@ -1397,8 +1400,7 @@ adminMenuCards.forEach((button) => {
   loadScoreGames();
 }
 if (page === "teams") {
-  console.log("TEAMS CLICK WORKED");
-  showAdminManager("teams");
+   showAdminManager("teams");
   loadAdminTeams();
 }
 if (page === "schedule") {
