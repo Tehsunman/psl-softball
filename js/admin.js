@@ -1008,7 +1008,7 @@ gameEditor.scrollIntoView({
   behavior: "smooth",
   block: "start"
 });
-
+}
 
 function closeGameEditor() {
   editingGameId = null;
