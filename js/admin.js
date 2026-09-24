@@ -24,6 +24,8 @@ const passwordInput = document.querySelector("#admin-password");
 const loginError = document.querySelector("#login-error");
 
 const logoutButton = document.querySelector("#logout-btn");
+const forgotPasswordButton =
+  document.querySelector("#forgot-password-btn");
 
 
 // ======================================================
@@ -111,6 +113,47 @@ loginForm.addEventListener("submit", async (event) => {
   showDashboard();
 });
 
+// ======================================================
+// FORGOT PASSWORD
+// ======================================================
+
+forgotPasswordButton.addEventListener("click", async () => {
+  const email = emailInput.value.trim();
+
+  loginError.hidden = true;
+  loginError.textContent = "";
+
+  if (!email) {
+    loginError.textContent =
+      "Enter your email address first.";
+
+    loginError.hidden = false;
+    return;
+  }
+
+  const redirectUrl =
+    "https://tehsunman.github.io/psl-softball/set-password.html";
+
+  const { error } =
+    await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectUrl,
+    });
+
+  if (error) {
+    console.error(error);
+
+    loginError.textContent =
+      "We couldn't send the password reset email.";
+
+    loginError.hidden = false;
+    return;
+  }
+
+  loginError.textContent =
+    "Check your email for a password reset link.";
+
+  loginError.hidden = false;
+});
 
 // ======================================================
 // LOGOUT
