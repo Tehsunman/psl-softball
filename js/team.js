@@ -31,7 +31,7 @@ teamLeagueLabel.textContent = `${leagueName} Softball`;
 
 teamDivisionLabel.textContent = `${selectedDivision || ""} Division`;
 
-document.title = `${selectedTeam || "Team"} Softball League`;
+document.title = `${selectedTeam || "Team"};
 
 // ======================================================
 // TEAM SCHEDULE
