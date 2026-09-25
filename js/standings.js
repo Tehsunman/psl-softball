@@ -85,13 +85,14 @@ function renderStandings() {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td class="standings-team">${team.team}</td>
-      <td>${team.w}</td>
-      <td>${team.l}</td>
-      <td>${team.t}</td>
-      <td>${team.rf}</td>
-      <td>${team.ra}</td>
-    `;
+  <td class="standings-team">${team.team}</td>
+  <td>${team.w + team.l + team.t}</td>
+  <td>${team.w}</td>
+  <td>${team.l}</td>
+  <td>${team.t}</td>
+  <td>${team.rf}</td>
+  <td>${team.ra}</td>
+`;
 
     standingsBody.appendChild(tr);
   });
@@ -184,11 +185,15 @@ async function loadStandings() {
   const aGames = a.w + a.l + a.t;
   const bGames = b.w + b.l + b.t;
 
-  const aWinPct =
-    aGames > 0 ? (a.w + a.t * 0.5) / aGames : 0;
+  // Teams that have played rank above teams with 0 GP
+  if (aGames === 0 && bGames > 0) return 1;
+  if (bGames === 0 && aGames > 0) return -1;
 
-  const bWinPct =
-    bGames > 0 ? (b.w + b.t * 0.5) / bGames : 0;
+  // Keep 0 GP teams together
+  if (aGames === 0 && bGames === 0) return 0;
+
+  const aWinPct = (a.w + a.t * 0.5) / aGames;
+  const bWinPct = (b.w + b.t * 0.5) / bGames;
 
   // Better W/L record first
   if (bWinPct !== aWinPct) {
