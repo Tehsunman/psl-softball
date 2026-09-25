@@ -167,11 +167,11 @@ function renderSchedule() {
 const timeDisplay = isFinal ? "FINAL" : formatScheduleTime(game.time);
 
 const homeDisplay = isFinal
-  ? `${game.home} ${game.home_score}`
+  ? `${game.home} <span class="schedule-score">${game.home_score}</span>`
   : game.home;
 
 const awayDisplay = isFinal
-  ? `${game.away} ${game.away_score}`
+  ? `${game.away} <span class="schedule-score">${game.away_score}</span>`
   : game.away;
 
 tr.innerHTML = `
