@@ -1,3 +1,15 @@
+// ======================================================
+// SUPABASE
+// ======================================================
+
+const SUPABASE_URL = "https://naalbruprafetbxwglof.supabase.co";
+const SUPABASE_KEY = "sb_publishable_waUfYbsRuEAT80JqUmjQ9w_wARPo47p";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 const leagueFilters = document.querySelector("#standings-league-filters");
 const divisionFilters = document.querySelector("#standings-division-filters");
 const standingsBody = document.querySelector("#standings-body");
@@ -17,6 +29,7 @@ let activeLeague = params.get("league") === "coed" ? "coed" : "mens";
 
 // Default division
 let activeDivision = activeLeague === "mens" ? "Upper" : "Social";
+let calculatedStandings = [];
 
 // ======================================================
 // DIVISION BUTTONS
@@ -62,9 +75,9 @@ function renderStandings() {
   standingsTitle.textContent = `${leagueName} ${activeDivision} Division`;
 
   // Get standings data
-  const rows = (leagueData.standings || []).filter(
-    (team) => team.league === activeLeague && team.division === activeDivision,
-  );
+  const rows = calculatedStandings.filter(
+  (team) => team.league === activeLeague && team.division === activeDivision,
+);
 
   standingsBody.innerHTML = "";
 
@@ -90,6 +103,89 @@ function renderStandings() {
 }
 
 // ======================================================
+// LOAD AND CALCULATE STANDINGS
+// ======================================================
+
+async function loadStandings() {
+  const { data: teams, error: teamsError } = await supabaseClient
+    .from("teams")
+    .select("id, name, league, division");
+
+  if (teamsError) {
+    console.error("Could not load teams:", teamsError);
+    calculatedStandings = [];
+    renderStandings();
+    return;
+  }
+
+  const { data: games, error: gamesError } = await supabaseClient
+    .from("games")
+    .select(`
+      home_team_id,
+      away_team_id,
+      home_score,
+      away_score,
+      status
+    `)
+    .eq("status", "final");
+
+  if (gamesError) {
+    console.error("Could not load final games:", gamesError);
+    calculatedStandings = [];
+    renderStandings();
+    return;
+  }
+
+  const standingsMap = {};
+
+  // Start every team at 0-0-0
+  teams.forEach((team) => {
+    standingsMap[team.id] = {
+      team: team.name,
+      league: team.league,
+      division: team.division,
+      w: 0,
+      l: 0,
+      t: 0,
+      rf: 0,
+      ra: 0,
+    };
+  });
+
+  // Apply every final game to the standings
+  games.forEach((game) => {
+    const home = standingsMap[game.home_team_id];
+    const away = standingsMap[game.away_team_id];
+
+    if (!home || !away) return;
+
+    const homeScore = Number(game.home_score);
+    const awayScore = Number(game.away_score);
+
+    home.rf += homeScore;
+    home.ra += awayScore;
+
+    away.rf += awayScore;
+    away.ra += homeScore;
+
+    if (homeScore > awayScore) {
+      home.w += 1;
+      away.l += 1;
+    } else if (awayScore > homeScore) {
+      away.w += 1;
+      home.l += 1;
+    } else {
+      home.t += 1;
+      away.t += 1;
+    }
+  });
+
+  calculatedStandings = Object.values(standingsMap);
+
+  renderStandings();
+}
+
+// ======================================================
 // LEAGUE BUTTONS
 // ======================================================
 
@@ -111,4 +207,4 @@ leagueFilters.addEventListener("click", (event) => {
 // INITIAL PAGE LOAD
 // ======================================================
 
-renderStandings();
+loadStandings();
