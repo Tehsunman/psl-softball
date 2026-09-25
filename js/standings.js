@@ -180,9 +180,30 @@ async function loadStandings() {
     }
   });
 
-  calculatedStandings = Object.values(standingsMap);
+  calculatedStandings = Object.values(standingsMap).sort((a, b) => {
+  const aGames = a.w + a.l + a.t;
+  const bGames = b.w + b.l + b.t;
 
-  renderStandings();
+  const aWinPct =
+    aGames > 0 ? (a.w + a.t * 0.5) / aGames : 0;
+
+  const bWinPct =
+    bGames > 0 ? (b.w + b.t * 0.5) / bGames : 0;
+
+  // Better W/L record first
+  if (bWinPct !== aWinPct) {
+    return bWinPct - aWinPct;
+  }
+
+  // Same record: more Runs For ranks higher
+  if (b.rf !== a.rf) {
+    return b.rf - a.rf;
+  }
+
+  return 0;
+});
+
+renderStandings();
 }
 
 // ======================================================
