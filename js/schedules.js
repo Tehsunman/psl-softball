@@ -98,19 +98,30 @@ function formatScheduleDate(dateString) {
 // ======================================================
 
 function convertScheduleTimeToMinutes(timeString) {
-  const [time, period] = timeString.split(" ");
-  let [hours, minutes] = time.split(":").map(Number);
+  if (!timeString) return 0;
 
-  if (period === "PM" && hours !== 12) {
-    hours += 12;
-  }
-
-  if (period === "AM" && hours === 12) {
-    hours = 0;
-  }
+  const [hours, minutes] = timeString.split(":").map(Number);
 
   return hours * 60 + minutes;
 }
+
+// ======================================================
+// FORMAT GAME TIME FOR DISPLAY
+// ======================================================
+
+function formatScheduleTime(timeString) {
+  if (!timeString) return "";
+
+  const [hoursString, minutes] = timeString.split(":");
+  let hours = Number(hoursString);
+
+  const period = hours >= 12 ? "PM" : "AM";
+
+  hours = hours % 12 || 12;
+
+  return `${hours}:${minutes} ${period}`;
+}
+
 
 // ======================================================
 // RENDER SCHEDULE
@@ -153,7 +164,7 @@ function renderSchedule() {
 
     const isFinal = game.status === "final";
 
-const timeDisplay = isFinal ? "FINAL" : game.time;
+const timeDisplay = isFinal ? "FINAL" : formatScheduleTime(game.time);
 
 const homeDisplay = isFinal
   ? `${game.home} ${game.home_score}`
