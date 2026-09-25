@@ -14,11 +14,6 @@
   <body>
     <header class="site-header">
       <div class="nav-wrap">
-        <a class="brand" href="index.html">
-          <span class="brand-ball">●</span>
-          <span></span>
-        </a>
-
         <button
           class="menu-button"
           aria-label="Open navigation"
@@ -27,12 +22,14 @@
           ☰
         </button>
 
-        <nav class="nav">
+        <nav class="nav" aria-label="Main navigation">
           <a href="index.html">Home</a>
           <a href="schedules.html">Schedules</a>
-          <a class="active" href="teams.html">Teams</a>
+          <a href="teams.html">Teams</a>
           <a href="standings.html">Standings</a>
         </nav>
+
+        <a class="admin-login-link" href="admin.html">Admin Login</a>
       </div>
     </header>
 

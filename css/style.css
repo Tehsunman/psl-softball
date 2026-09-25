@@ -51,10 +51,10 @@ a {
     width: min(1160px, calc(100% - 40px));
     margin: auto;
     min-height: 76px;
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 30px
+    justify-content: center;
 }
 
 .brand {
@@ -94,6 +94,26 @@ a {
 .nav a:hover,
 .nav a.active {
     border-color: var(--pink)
+}
+
+.admin-login-link {
+    position: absolute;
+    right: 0;
+    height: 76px;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: #fff;
+    opacity: .8;
+}
+
+.admin-login-link:hover {
+    opacity: 1;
+    color: var(--pink);
 }
 
 .menu-button {
@@ -357,8 +377,15 @@ th:last-child {
     }
 
     .nav-wrap {
-        min-height: 64px
-    }
+    min-height: 64px;
+    justify-content: flex-start;
+}
+
+.admin-login-link {
+    position: absolute;
+    right: 0;
+    height: 64px;
+}
 
     .menu-button {
         display: block
