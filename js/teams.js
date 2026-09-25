@@ -1,4 +1,16 @@
 // ======================================================
+// SUPABASE
+// ======================================================
+
+const SUPABASE_URL = "https://naalbruprafetbxwglof.supabase.co";
+const SUPABASE_KEY = "sb_publishable_waUfYbsRuEAT80JqUmjQ9w_wARPo47p";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// ======================================================
 // TEAMS PAGE
 // ======================================================
 
@@ -23,6 +35,8 @@ const teamDivisions = {
 
 let activeTeamLeague = "mens";
 let activeTeamDivision = "Upper";
+
+let allTeams = [];
 
 // ======================================================
 // CREATE DIVISION BUTTONS
@@ -53,27 +67,13 @@ function renderTeamDivisionButtons() {
 // ======================================================
 
 function getSelectedTeams() {
-  if (activeTeamLeague === "mens") {
-    if (activeTeamDivision === "Lower") {
-      return leagueData.teams.mens.lower;
-    }
-
-    if (activeTeamDivision === "Middle") {
-      return leagueData.teams.mens.middle;
-    }
-
-    return leagueData.teams.mens.upper;
-  }
-
-  if (activeTeamDivision === "Social") {
-    return leagueData.teams.coed.social;
-  }
-
-  if (activeTeamDivision === "Lower") {
-    return leagueData.teams.coed.lower;
-  }
-
-  return leagueData.teams.coed.middleUpper;
+  return allTeams
+    .filter(
+      (team) =>
+        team.league === activeTeamLeague &&
+        team.division === activeTeamDivision,
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // ======================================================
@@ -99,25 +99,19 @@ function renderTeams() {
   teamList.innerHTML = "";
 
   teams.forEach((team) => {
-    const teamCard = document.createElement("a");
+  const teamCard = document.createElement("a");
 
-    teamCard.className = "team-item";
+  teamCard.className = "team-item";
 
-    teamCard.href =
-      `team.html?team=${encodeURIComponent(team)}` +
-      `&league=${encodeURIComponent(activeTeamLeague)}` +
-      `&division=${encodeURIComponent(activeTeamDivision)}`;
+  teamCard.href =
+    `team.html?team=${encodeURIComponent(team.name)}` +
+    `&league=${encodeURIComponent(team.league)}` +
+    `&division=${encodeURIComponent(team.division)}`;
 
-    teamCard.textContent = team;
+  teamCard.textContent = team.name;
 
-    teamList.appendChild(teamCard);
-  });
-
-  const hasTeams = teams.length > 0;
-
-  teamList.hidden = !hasTeams;
-  teamsEmpty.hidden = hasTeams;
-}
+  teamList.appendChild(teamCard);
+});
 
 // ======================================================
 // CHANGE LEAGUE
@@ -141,7 +135,29 @@ teamLeagueFilters.addEventListener("click", (event) => {
 });
 
 // ======================================================
+// LOAD TEAMS
+// ======================================================
+
+async function loadTeams() {
+  const { data, error } = await supabaseClient
+    .from("teams")
+    .select("id, name, league, division")
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Could not load teams:", error);
+    allTeams = [];
+    renderTeams();
+    return;
+  }
+
+  allTeams = data || [];
+
+  renderTeams();
+}
+
+// ======================================================
 // INITIAL PAGE LOAD
 // ======================================================
 
-renderTeams();
+loadTeams();
