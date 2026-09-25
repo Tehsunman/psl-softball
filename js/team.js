@@ -189,13 +189,14 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
     )
     .sort((a, b) => {
       if (a.game_date !== b.game_date) {
-  return a.game_date.localeCompare(b.game_date);
-}
+        return a.game_date.localeCompare(b.game_date);
+      }
 
-return (
-  convertTeamTimeToMinutes(a.game_time) -
-  convertTeamTimeToMinutes(b.game_time)
-);
+      return (
+        convertTeamTimeToMinutes(a.game_time) -
+        convertTeamTimeToMinutes(b.game_time)
+      );
+    });
 
   teamScheduleBody.innerHTML = "";
 
