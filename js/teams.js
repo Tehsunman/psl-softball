@@ -161,7 +161,7 @@ async function loadTeams() {
   allTeams = data || [];
 
   renderTeams();
-
+}
 
 // ======================================================
 // INITIAL PAGE LOAD
