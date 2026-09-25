@@ -1400,3 +1400,7 @@ th:last-child {
 .schedule-winner {
   font-weight: 700;
 }
+
+.team-result.final {
+    font-weight: 800;
+}

@@ -212,24 +212,29 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
 
     const isFinal = game.status === "final";
 
-    let timeDisplay = formatTeamTime(game.game_time);
+    const timeDisplay = formatTeamTime(game.game_time);
 
-    if (isFinal) {
-      const teamScore = isHome
-        ? Number(game.home_score)
-        : Number(game.away_score);
+let resultDisplay = "—";
 
-      const opponentScore = isHome
-        ? Number(game.away_score)
-        : Number(game.home_score);
+if (isFinal) {
+  const teamScore = isHome
+    ? Number(game.home_score)
+    : Number(game.away_score);
 
-      let result = "T";
+  const opponentScore = isHome
+    ? Number(game.away_score)
+    : Number(game.home_score);
 
-      if (teamScore > opponentScore) {
-        result = "W";
-      } else if (teamScore < opponentScore) {
-        result = "L";
-      }
+  let result = "T";
+
+  if (teamScore > opponentScore) {
+    result = "W";
+  } else if (teamScore < opponentScore) {
+    result = "L";
+  }
+
+  resultDisplay = `${result} ${teamScore}-${opponentScore}`;
+}
 
       timeDisplay =
         `FINAL ${result} ${teamScore}-${opponentScore}`;
@@ -238,12 +243,13 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>${formatTeamDate(game.game_date)}</td>
-      <td>${timeDisplay}</td>
-      <td>${opponent}</td>
-      <td>${homeAway}</td>
-      <td>${game.location}</td>
-    `;
+  <td>${formatTeamDate(game.game_date)}</td>
+  <td>${timeDisplay}</td>
+  <td>${opponent}</td>
+  <td>${homeAway}</td>
+  <td>${game.location}</td>
+  <td class="team-result ${isFinal ? "final" : ""}">${resultDisplay}</td>
+`;
 
     teamScheduleBody.appendChild(tr);
   });
