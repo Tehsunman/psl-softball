@@ -210,31 +210,31 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
     const opponent = teamMap[opponentId]?.name || "Unknown Team";
     const homeAway = isHome ? "Home" : "Away";
 
-    const isFinal = game.status === "final";
+        const isFinal = game.status === "final";
 
     const timeDisplay = formatTeamTime(game.game_time);
 
-let resultDisplay = "—";
+    let resultDisplay = "—";
 
-if (isFinal) {
-  const teamScore = isHome
-    ? Number(game.home_score)
-    : Number(game.away_score);
+    if (isFinal) {
+      const teamScore = isHome
+        ? Number(game.home_score)
+        : Number(game.away_score);
 
-  const opponentScore = isHome
-    ? Number(game.away_score)
-    : Number(game.home_score);
+      const opponentScore = isHome
+        ? Number(game.away_score)
+        : Number(game.home_score);
 
-  let result = "T";
+      let result = "T";
 
-  if (teamScore > opponentScore) {
-    result = "W";
-  } else if (teamScore < opponentScore) {
-    result = "L";
-  }
+      if (teamScore > opponentScore) {
+        result = "W";
+      } else if (teamScore < opponentScore) {
+        result = "L";
+      }
 
-  resultDisplay = `${result} ${teamScore}-${opponentScore}`;
-}
+      resultDisplay = `${result} ${teamScore}-${opponentScore}`;
+    }
 
     const tr = document.createElement("tr");
 
