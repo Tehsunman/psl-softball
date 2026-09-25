@@ -142,22 +142,24 @@ async function loadTeamPage() {
   // Load every game in this division.
   // We need all division games because they also build the standings.
   const { data: games, error: gamesError } = await supabaseClient
-    .from("games")
-    .select(`
-      id,
-      league,
-      division,
-      date,
-      time,
-      location,
-      home_team_id,
-      away_team_id,
-      home_score,
-      away_score,
-      status
-    `)
-    .eq("league", selectedLeague)
-    .eq("division", selectedDivision);
+  .from("games")
+  .select(`
+    id,
+    league,
+    division,
+    game_date,
+    game_time,
+    location,
+    home_team_id,
+    away_team_id,
+    home_score,
+    away_score,
+    status
+  `)
+  .eq("league", selectedLeague)
+  .eq("division", selectedDivision)
+  .order("game_date", { ascending: true })
+  .order("game_time", { ascending: true });
 
   if (gamesError) {
     console.error("Could not load division games:", gamesError);
@@ -186,15 +188,14 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
         game.away_team_id === currentTeam.id
     )
     .sort((a, b) => {
-      if (a.date !== b.date) {
-        return a.date.localeCompare(b.date);
-      }
+      if (a.game_date !== b.game_date) {
+  return a.game_date.localeCompare(b.game_date);
+}
 
-      return (
-        convertTeamTimeToMinutes(a.time) -
-        convertTeamTimeToMinutes(b.time)
-      );
-    });
+return (
+  convertTeamTimeToMinutes(a.game_time) -
+  convertTeamTimeToMinutes(b.game_time)
+);
 
   teamScheduleBody.innerHTML = "";
 
@@ -210,7 +211,7 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
 
     const isFinal = game.status === "final";
 
-    let timeDisplay = formatTeamTime(game.time);
+    let timeDisplay = formatTeamTime(game.game_time);
 
     if (isFinal) {
       const teamScore = isHome
@@ -236,7 +237,7 @@ function renderTeamSchedule(currentTeam, games, teamMap) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>${formatTeamDate(game.date)}</td>
+      <td>${formatTeamDate(game.game_date)}</td>
       <td>${timeDisplay}</td>
       <td>${opponent}</td>
       <td>${homeAway}</td>
