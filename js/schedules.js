@@ -163,6 +163,8 @@ function renderSchedule() {
     const tr = document.createElement("tr");
 
     const isFinal = game.status === "final";
+    
+    const timeDisplay = isFinal ? "FINAL" : formatScheduleTime(game.time);
 
 const homeWon =
   isFinal && Number(game.home_score) > Number(game.away_score);
