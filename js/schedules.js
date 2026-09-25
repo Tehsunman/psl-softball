@@ -164,14 +164,22 @@ function renderSchedule() {
 
     const isFinal = game.status === "final";
 
-const timeDisplay = isFinal ? "FINAL" : formatScheduleTime(game.time);
+const homeWon =
+  isFinal && Number(game.home_score) > Number(game.away_score);
+
+const awayWon =
+  isFinal && Number(game.away_score) > Number(game.home_score);
 
 const homeDisplay = isFinal
-  ? `${game.home} <span class="schedule-score">${game.home_score}</span>`
+  ? `<span class="${homeWon ? "schedule-winner" : ""}">
+      ${game.home} <span class="schedule-score">${game.home_score}</span>
+    </span>`
   : game.home;
 
 const awayDisplay = isFinal
-  ? `${game.away} <span class="schedule-score">${game.away_score}</span>`
+  ? `<span class="${awayWon ? "schedule-winner" : ""}">
+      ${game.away} <span class="schedule-score">${game.away_score}</span>
+    </span>`
   : game.away;
 
 tr.innerHTML = `
