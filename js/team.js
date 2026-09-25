@@ -236,10 +236,6 @@ if (isFinal) {
   resultDisplay = `${result} ${teamScore}-${opponentScore}`;
 }
 
-      timeDisplay =
-        `FINAL ${result} ${teamScore}-${opponentScore}`;
-    }
-
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
