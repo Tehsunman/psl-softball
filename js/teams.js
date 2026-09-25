@@ -111,7 +111,14 @@ function renderTeams() {
   teamCard.textContent = team.name;
 
   teamList.appendChild(teamCard);
-});
+  });
+
+  const hasTeams = teams.length > 0;
+
+  teamList.hidden = !hasTeams;
+  teamsEmpty.hidden = hasTeams;
+}
+
 
 // ======================================================
 // CHANGE LEAGUE
@@ -154,11 +161,10 @@ async function loadTeams() {
   allTeams = data || [];
 
   renderTeams();
-}
+
 
 // ======================================================
 // INITIAL PAGE LOAD
 // ======================================================
 
 loadTeams();
-}
