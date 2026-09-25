@@ -185,9 +185,54 @@ tr.innerHTML = `
   scheduleEmpty.hidden = hasGames;
   scheduleBody.closest(".table-scroll").hidden = !hasGames;
 }
+// ======================================================
+// LOAD SCHEDULE FROM SUPABASE
+// ======================================================
 
+async function loadScheduleGames() {
+  const { data, error } = await supabaseClient
+    .from("games")
+    .select(`
+      id,
+      league,
+      division,
+      game_date,
+      game_time,
+      location,
+      home_score,
+      away_score,
+      status,
+      home_team:teams!games_home_team_id_fkey(name),
+      away_team:teams!games_away_team_id_fkey(name)
+    `)
+    .order("game_date", { ascending: true })
+    .order("game_time", { ascending: true });
+
+  if (error) {
+    console.error("Could not load public schedule:", error);
+    scheduleGames = [];
+    renderSchedule();
+    return;
+  }
+
+  scheduleGames = data.map((game) => ({
+    id: game.id,
+    date: game.game_date,
+    time: game.game_time,
+    league: game.league,
+    division: game.division,
+    home: game.home_team?.name || "TBD",
+    away: game.away_team?.name || "TBD",
+    location: game.location,
+    home_score: game.home_score,
+    away_score: game.away_score,
+    status: game.status,
+  }));
+
+  renderSchedule();
+}
 // ======================================================
 // INITIAL PAGE LOAD
 // ======================================================
 
-renderSchedule();
+loadScheduleGames();
