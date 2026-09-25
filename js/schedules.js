@@ -1,4 +1,16 @@
 // ======================================================
+// SUPABASE
+// ======================================================
+
+const SUPABASE_URL = "https://naalbruprqafetbxwglof.supabase.co";
+const SUPABASE_KEY = "PASTE_THE_SAME_PUBLISHABLE_KEY_FROM_ADMIN_JS_HERE";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// ======================================================
 // SCHEDULE PAGE
 // ======================================================
 
@@ -33,6 +45,7 @@ const params = new URLSearchParams(window.location.search);
 const activeLeague = params.get("league") === "coed" ? "coed" : "mens";
 
 let activeDivision = "All";
+let scheduleGames = [];
 
 // ======================================================
 // CREATE DIVISION BUTTONS
@@ -115,7 +128,7 @@ function renderSchedule() {
     activeLeague === "mens" ? "Monday & Wednesday" : "Friday";
 
   // Get games for selected league/division
-  const rows = leagueData.games
+  const rows = scheduleGames
     .filter(
       (game) =>
         game.league === activeLeague &&
@@ -138,14 +151,28 @@ function renderSchedule() {
   rows.forEach((game) => {
     const tr = document.createElement("tr");
 
-    tr.innerHTML = `
+    const isFinal = game.status === "final";
+
+const timeDisplay = isFinal ? "FINAL" : game.time;
+
+const homeDisplay = isFinal
+  ? `${game.home} ${game.home_score}`
+  : game.home;
+
+const awayDisplay = isFinal
+  ? `${game.away} ${game.away_score}`
+  : game.away;
+
+tr.innerHTML = `
   <td class="schedule-date">${formatScheduleDate(game.date)}</td>
-  <td class="schedule-time">${game.time}</td>
+  <td class="schedule-time">${timeDisplay}</td>
   <td class="schedule-home">
-  <div class="mobile-matchup">${game.home} <span>vs</span> ${game.away}</div>
-  <div class="desktop-home">${game.home}</div>
-</td>
-  <td class="schedule-away">${game.away}</td>
+    <div class="mobile-matchup">
+      ${homeDisplay} <span>vs</span> ${awayDisplay}
+    </div>
+    <div class="desktop-home">${homeDisplay}</div>
+  </td>
+  <td class="schedule-away">${awayDisplay}</td>
   <td class="schedule-location">${game.location}</td>
 `;
 
