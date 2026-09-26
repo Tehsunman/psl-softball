@@ -1442,3 +1442,7 @@ th:last-child {
   margin: 0;
   box-shadow: none;
 }
+
+#scores-manager {
+  padding-bottom: 90px;
+}
