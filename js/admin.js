@@ -1337,11 +1337,11 @@ function renderAdminSchedule(games) {
     const isFinal = game.status === "final";
 
 const awayScoreDisplay = isFinal
-  ? `<span class="admin-schedule-score">${awayScoreDisplay}</span>`
+  ? `<span class="admin-schedule-score">$${game.away_score}</span>`
   : "";
 
 const homeScoreDisplay = isFinal
-  ? `<span class="admin-schedule-score">${homeScoreDisplay}</span>`
+  ? `<span class="admin-schedule-score">$${game.home_score}</span>`
   : "";
 
 const statusDisplay = isFinal
