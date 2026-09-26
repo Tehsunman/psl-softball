@@ -1404,3 +1404,9 @@ th:last-child {
 .team-result.final {
     font-weight: 800;
 }
+
+.admin-schedule-score {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-weight: 800;
+}

@@ -1334,6 +1334,19 @@ function renderAdminSchedule(games) {
     });
 
     const formattedTime = formatAdminGameTime(game.game_time);
+    const isFinal = game.status === "final";
+
+const awayScoreDisplay = isFinal
+  ? `<span class="admin-schedule-score">${awayScoreDisplay}</span>`
+  : "";
+
+const homeScoreDisplay = isFinal
+  ? `<span class="admin-schedule-score">${homeScoreDisplay}</span>`
+  : "";
+
+const statusDisplay = isFinal
+  ? `<div class="admin-game-status">Final</div>`
+  : "";    
 
     card.innerHTML = `
       <div class="admin-game-meta">
@@ -1348,14 +1361,20 @@ function renderAdminSchedule(games) {
       <div class="admin-schedule-matchup">
         <div>
           <span class="admin-team-label">Away</span>
-          <strong>${game.away_team?.name || "Away Team"}</strong>
+          <strong>${game.away_team?.name || "Away Team"}
+          ${awayScoreDisplay}
+          </strong>
         </div>
+        
 
         <div>
           <span class="admin-team-label">Home</span>
-          <strong>${game.home_team?.name || "Home Team"}</strong>
+          <strong>${game.home_team?.name || "Home Team"}
+          ${homeScoreDisplay}
+          </strong>
         </div>
       </div>
+      ${statusDisplay}
 
       <button
         type="button"
