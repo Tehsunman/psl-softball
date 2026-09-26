@@ -1174,31 +1174,26 @@ adminScheduleList.addEventListener("click", async (event) => {
 
   // Get the complete game record from Supabase
   const { data: game, error } = await supabaseClient
-    .from("games")
-    .select(`
-  id,
-  game_date,
-  game_time,
-  location,
-  home_team_id,
-  away_team_id,
-  status
-`)
+  .from("games")
+  .select(`
+    id,
+    game_date,
+    game_time,
+    location,
+    home_team_id,
+    away_team_id,
+    status
+  `)
+  .eq("id", gameId)
+  .single();
+
 if (error) {
   console.error("Could not load game:", error);
   window.alert("We couldn't load this game. Please try again.");
   return;
 }
-    .eq("id", gameId)
-    .single();
 
-  if (error) {
-    console.error("Could not load game:", error);
-    window.alert("We couldn't load this game. Please try again.");
-    return;
-  }
-
-  if (game.status === "final") {
+if (game.status === "final") {
   const continueEditing = window.confirm(
     "This game already has a final score. Editing the teams, league, or division may change the standings. Continue?"
   );
