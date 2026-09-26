@@ -1410,3 +1410,19 @@ th:last-child {
   margin-left: 0.5rem;
   font-weight: 800;
 }
+
+/* ======================================================
+   STICKY SAVE ALL SCORES
+====================================================== */
+
+#save-all-scores {
+  position: sticky;
+  bottom: 20px;
+  z-index: 20;
+
+  display: block;
+  width: fit-content;
+  margin: 20px 0 0 auto;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
