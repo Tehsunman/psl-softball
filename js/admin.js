@@ -14,6 +14,7 @@ const supabaseClient = supabase.createClient(
 // ======================================================
 // ELEMENTS
 // ======================================================
+const saveAllScoresBtn = document.querySelector("#save-all-scores");
 const gameEditor = document.querySelector("#game-editor");
 const gameEditorTitle = document.querySelector("#game-editor-title");
 const gameForm = document.querySelector("#game-form");
@@ -501,6 +502,99 @@ if (homeScore === "" || awayScore === "") {
 
     firstScoreRow.before(status);
   }
+});
+
+// ======================================================
+// SAVE ALL SCORES
+// ======================================================
+
+saveAllScoresBtn.addEventListener("click", async () => {
+  const cards = [...scoreGames.querySelectorAll(".admin-game-card")];
+
+  const gamesToSave = [];
+
+  // Clear old messages and validate every card first
+  for (const card of cards) {
+    const homeScoreInput = card.querySelector("[data-home-score]");
+    const awayScoreInput = card.querySelector("[data-away-score]");
+    const saveButton = card.querySelector(".admin-save-score");
+    const message = card.querySelector(".admin-save-message");
+
+    const homeScore = homeScoreInput.value;
+    const awayScore = awayScoreInput.value;
+
+    message.hidden = true;
+    message.textContent = "";
+
+    // Completely blank games are ignored
+    if (homeScore === "" && awayScore === "") {
+      continue;
+    }
+
+    // Stop if only one score is entered
+    if (homeScore === "" || awayScore === "") {
+      message.textContent = "Enter both scores before saving.";
+      message.hidden = false;
+      return;
+    }
+
+    const homeScoreNumber = Number(homeScore);
+    const awayScoreNumber = Number(awayScore);
+
+    if (
+      !Number.isInteger(homeScoreNumber) ||
+      !Number.isInteger(awayScoreNumber) ||
+      homeScoreNumber < 0 ||
+      awayScoreNumber < 0
+    ) {
+      message.textContent = "Scores must be whole numbers of 0 or higher.";
+      message.hidden = false;
+      return;
+    }
+
+    gamesToSave.push({
+      id: saveButton.dataset.gameId,
+      homeScore: homeScoreNumber,
+      awayScore: awayScoreNumber,
+    });
+  }
+
+  if (gamesToSave.length === 0) {
+    return;
+  }
+
+  saveAllScoresBtn.disabled = true;
+  saveAllScoresBtn.textContent = "Saving...";
+
+  for (const game of gamesToSave) {
+    const { error } = await supabaseClient
+      .from("games")
+      .update({
+        home_score: game.homeScore,
+        away_score: game.awayScore,
+        status: "final",
+      })
+      .eq("id", game.id);
+
+    if (error) {
+      console.error("Could not save score:", error);
+
+      saveAllScoresBtn.disabled = false;
+      saveAllScoresBtn.textContent = "Save All Scores";
+
+      alert("One or more scores could not be saved. Please try again.");
+      return;
+    }
+  }
+
+  saveAllScoresBtn.textContent = "Saved!";
+
+  await loadScoreGames();
+
+  setTimeout(() => {
+    saveAllScoresBtn.textContent = "Save All Scores";
+    saveAllScoresBtn.disabled = false;
+  }, 1500);
 });
 
 renderScoreDivisions();
