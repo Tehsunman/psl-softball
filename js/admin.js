@@ -1176,13 +1176,19 @@ adminScheduleList.addEventListener("click", async (event) => {
   const { data: game, error } = await supabaseClient
     .from("games")
     .select(`
-      id,
-      game_date,
-      game_time,
-      location,
-      home_team_id,
-      away_team_id
-    `)
+  id,
+  game_date,
+  game_time,
+  location,
+  home_team_id,
+  away_team_id,
+  status
+`)
+if (error) {
+  console.error("Could not load game:", error);
+  window.alert("We couldn't load this game. Please try again.");
+  return;
+}
     .eq("id", gameId)
     .single();
 
@@ -1191,6 +1197,16 @@ adminScheduleList.addEventListener("click", async (event) => {
     window.alert("We couldn't load this game. Please try again.");
     return;
   }
+
+  if (game.status === "final") {
+  const continueEditing = window.confirm(
+    "This game already has a final score. Editing the teams, league, or division may change the standings. Continue?"
+  );
+
+  if (!continueEditing) {
+    return;
+  }
+}
 
   editingGameId = game.id;
 
