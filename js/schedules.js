@@ -13,7 +13,9 @@ const supabaseClient = supabase.createClient(
 // ======================================================
 // SCHEDULE PAGE
 // ======================================================
-
+const scheduleLeagueFilters = document.querySelector(
+  "#schedule-league-filters"
+);
 const divisionFilters = document.querySelector("#division-filters");
 const scheduleBody = document.querySelector("#schedule-body");
 const scheduleTitle = document.querySelector("#schedule-title");
@@ -42,7 +44,7 @@ const divisions = {
 
 const params = new URLSearchParams(window.location.search);
 
-const activeLeague = params.get("league") === "coed" ? "coed" : "mens";
+let activeLeague = params.get("league") === "coed" ? "coed" : "mens";
 
 let activeDivision = "All";
 let scheduleGames = [];
@@ -130,6 +132,13 @@ function formatScheduleTime(timeString) {
 function renderSchedule() {
   renderDivisionButtons();
 
+  document.querySelectorAll("[data-schedule-league]").forEach((button) => {
+    button.classList.toggle(
+      "active",
+      button.dataset.scheduleLeague === activeLeague
+    );
+  });
+
   // Page heading
   scheduleTitle.textContent =
     activeLeague === "mens" ? "Men's Schedule" : "Coed Schedule";
@@ -163,7 +172,7 @@ function renderSchedule() {
     const tr = document.createElement("tr");
 
     const isFinal = game.status === "final";
-    
+
     const timeDisplay = isFinal ? "FINAL" : formatScheduleTime(game.time);
 
 const homeWon =
@@ -206,6 +215,24 @@ tr.innerHTML = `
   scheduleEmpty.hidden = hasGames;
   scheduleBody.closest(".table-scroll").hidden = !hasGames;
 }
+
+// ======================================================
+// CHANGE LEAGUE
+// ======================================================
+
+scheduleLeagueFilters.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-schedule-league]");
+
+  if (!button) {
+    return;
+  }
+
+  activeLeague = button.dataset.scheduleLeague;
+  activeDivision = "All";
+
+  renderSchedule();
+});
+
 // ======================================================
 // LOAD SCHEDULE FROM SUPABASE
 // ======================================================
