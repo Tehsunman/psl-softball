@@ -1415,14 +1415,30 @@ th:last-child {
    STICKY SAVE ALL SCORES
 ====================================================== */
 
-#save-all-scores {
+/* ======================================================
+   SAVE ALL SCORES
+====================================================== */
+
+.admin-score-actions {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
   z-index: 1000;
 
-  width: auto;
-  margin: 0;
+  width: min(520px, calc(100% - 32px));
+  padding: 10px;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #d6e0e5;
+  border-radius: 8px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+}
+
+#save-all-scores {
+  position: static;
+  display: block;
+  width: 100%;
+  margin: 0;
+  box-shadow: none;
 }
