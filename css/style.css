@@ -1416,13 +1416,13 @@ th:last-child {
 ====================================================== */
 
 #save-all-scores {
-  position: sticky;
-  bottom: 20px;
-  z-index: 20;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
 
-  display: block;
-  width: fit-content;
-  margin: 20px 0 0 auto;
+  width: auto;
+  margin: 0;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
 }
