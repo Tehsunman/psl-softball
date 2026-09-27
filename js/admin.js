@@ -187,7 +187,7 @@ forgotPasswordButton.addEventListener("click", async () => {
   }
 
   const redirectUrl =
-    "https://tehsunman.github.io/psl-softball/set-password.html";
+    "https://cityleagueball.github.io/set-password.html";
 
   const { error } =
     await supabaseClient.auth.resetPasswordForEmail(email, {
