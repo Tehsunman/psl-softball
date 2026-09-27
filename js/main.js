@@ -7,10 +7,26 @@ if (menuButton && nav) {
   });
 }
 
+// ======================================================
+// HOMEPAGE UPCOMING GAMES
+// ======================================================
+
 const games = document.querySelector("#upcoming-games");
 
 if (games) {
-  // Get today's date in YYYY-MM-DD format using the visitor's local time.
+  loadUpcomingGames();
+}
+
+async function loadUpcomingGames() {
+  const SUPABASE_URL = "https://naalbruprafetbxwglof.supabase.co";
+  const SUPABASE_KEY =
+    "sb_publishable_waUfYbsRuEAT80JqUmjQ9w_wARPo47p";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
   const today = new Date();
 
   const todayString = [
@@ -19,50 +35,65 @@ if (games) {
     String(today.getDate()).padStart(2, "0"),
   ].join("-");
 
-  // Find all games scheduled for today or later.
-  const futureGames = leagueData.games
-    .filter((game) => game.date >= todayString)
-    .sort((a, b) => {
-      if (a.date !== b.date) {
-        return a.date.localeCompare(b.date);
-      }
+  const { data, error } = await supabaseClient
+    .from("games")
+    .select(`
+      id,
+      game_date,
+      game_time,
+      location,
+      home_team:teams!games_home_team_id_fkey(name),
+      away_team:teams!games_away_team_id_fkey(name)
+    `)
+    .gte("game_date", todayString)
+    .order("game_date", { ascending: true })
+    .order("game_time", { ascending: true });
 
-      return convertTimeToMinutes(a.time) - convertTimeToMinutes(b.time);
-    });
+  games.innerHTML = "";
 
-  if (futureGames.length > 0) {
-    // Find the next date on which games are scheduled.
-    const nextGameDate = futureGames[0].date;
+  if (error) {
+    console.error("Could not load upcoming games:", error);
+    showNoUpcomingGames();
+    return;
+  }
 
-    // Show every game scheduled for that date.
-    const upcomingGames = futureGames.filter(
-      (game) => game.date === nextGameDate,
-    );
+  if (!data || data.length === 0) {
+    showNoUpcomingGames();
+    return;
+  }
 
-    upcomingGames.forEach((g) => {
-      const tr = document.createElement("tr");
+  // Show every game on the next scheduled game date.
+  const nextGameDate = data[0].game_date;
 
-      tr.innerHTML = `
-  <td class="game-date">${formatGameDate(g.date)}</td>
-  <td class="game-time">${g.time}</td>
-  <td class="game-home">${g.home}</td>
-  <td class="game-away">${g.away}</td>
-  <td class="game-location">${g.location}</td>
-`;
+  const upcomingGames = data.filter(
+    (game) => game.game_date === nextGameDate
+  );
 
-      games.appendChild(tr);
-    });
-  } else {
+  upcomingGames.forEach((game) => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td colspan="5" class="no-games">
-        No upcoming games scheduled.
-      </td>
+      <td class="game-date">${formatGameDate(game.game_date)}</td>
+      <td class="game-time">${formatGameTime(game.game_time)}</td>
+      <td class="game-home">${game.home_team?.name || "TBD"}</td>
+      <td class="game-away">${game.away_team?.name || "TBD"}</td>
+      <td class="game-location">${game.location || ""}</td>
     `;
 
     games.appendChild(tr);
-  }
+  });
+}
+
+function showNoUpcomingGames() {
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+    <td colspan="5" class="no-games">
+      No upcoming games scheduled.
+    </td>
+  `;
+
+  games.appendChild(tr);
 }
 
 // ======================================================
@@ -80,17 +111,23 @@ function formatGameDate(dateString) {
   });
 }
 
-function convertTimeToMinutes(timeString) {
-  const [time, period] = timeString.split(" ");
-  let [hours, minutes] = time.split(":").map(Number);
-
-  if (period === "PM" && hours !== 12) {
-    hours += 12;
+function formatGameTime(timeString) {
+  if (!timeString) {
+    return "";
   }
 
-  if (period === "AM" && hours === 12) {
-    hours = 0;
+  const [hoursString, minutesString] = timeString.split(":");
+
+  let hours = Number(hoursString);
+  const minutes = Number(minutesString);
+
+  const period = hours >= 12 ? "PM" : "AM";
+
+  hours = hours % 12;
+
+  if (hours === 0) {
+    hours = 12;
   }
 
-  return hours * 60 + minutes;
+  return `${hours}:${String(minutes).padStart(2, "0")} ${period}`;
 }
